@@ -1,11 +1,10 @@
-const chalk = require("chalk");
 const app = require("./app.js");
 
 const connectDB = require("./config/connectDB");
 connectDB()
 
-const port = process.env.PORT
+const port = process.env.PORT || 3000;
 
 app.listen(port,() => {
-    console.log(chalk.bgGreen(`Server is running at port ${port}`));
+    console.log(`Server is running at port ${port}`);
 })

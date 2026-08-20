@@ -1,4 +1,4 @@
-let orders = require("../data/orders.js");
+const Orders = require("../models/orders.model.js");
 const appError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
@@ -11,15 +11,24 @@ exports.getOneOrder = catchAsync(async (req, res, next) => {
 })
 
 exports.addOrder = catchAsync(async (req, res, next) => {
-
+    const order = await Orders.create(req.body);
+    res.status(200).json({
+        success: true,
+        message: "Order added successfully"
+    })
 })
 
-exports.acceptOrder = catchAsync(async (req, res, next) => {
+exports.shipOrder = catchAsync(async (req, res, next) => {
+    const order = await Orders.findById(req.params.id);
+    if (!order) return next(new appError(404, `No order found with this id ${req.params.id}`));
 
-})
+    order.isShipped = true;
+    await order.save();
 
-exports.rejectOrder = catchAsync(async (req, res, next) => {
-
+    res.status(200).json({
+        success: true,
+        message: "Order accepted successfully"
+    })
 })
 
 exports.getUserOrders = catchAsync(async (req, res, next) => {

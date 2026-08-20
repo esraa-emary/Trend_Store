@@ -1,4 +1,4 @@
-let products = require("../data/products.js");
+const Products = require("../models/products.model.js");
 const appError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 

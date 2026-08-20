@@ -1,4 +1,4 @@
-let users = require("../data/users.js");
+const Users = require("../models/users.model.js");
 const appError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
