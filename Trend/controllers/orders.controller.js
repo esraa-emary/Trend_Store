@@ -10,6 +10,7 @@ exports.getOneOrder = catchAsync(async (req, res, next) => {
 
 })
 
+// add ---esraa
 exports.addOrder = catchAsync(async (req, res, next) => {
     const order = await Orders.create(req.body);
     res.status(200).json({
@@ -18,6 +19,7 @@ exports.addOrder = catchAsync(async (req, res, next) => {
     })
 })
 
+// ship --esraa
 exports.shipOrder = catchAsync(async (req, res, next) => {
     const order = await Orders.findById(req.params.id);
     if (!order) return next(new appError(404, `No order found with this id ${req.params.id}`));
