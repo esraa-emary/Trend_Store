@@ -1,23 +1,16 @@
-const express = require("express");
-const mongoose = require("mongoose");
+require("dotenv").config();
 
-const userRoutes = require("./routes/user.routes");
+const app = require("./index");
+const connectDB = require("./config/connectDB");
 
-const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+const startServer = async () => {
+    await connectDB();
 
-app.use("/api/users", userRoutes);
-
-mongoose
-  .connect("mongodb+srv://ammarqamardev_db_user:e8bAb6penUCUAmiu@cluster0.6wh8wmw.mongodb.net/TREND")
-  .then(() => {
-    console.log("MongoDB connected");
-
-    app.listen(3000, () => {
-      console.log("Server is running on port 3000");
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
     });
-  })
-  .catch((error) => {
-    console.log("MongoDB connection error:", error);
-  });
+};
+
+startServer();
