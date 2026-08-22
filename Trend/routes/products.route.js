@@ -10,4 +10,9 @@ router.route("/:id")
 .patch(updateProduct)
 .delete(hideProduct)
 
+
+// rout for the hided products --samah
+router.patch("/:id/hide", hideProduct);
+
+
 module.exports = router
