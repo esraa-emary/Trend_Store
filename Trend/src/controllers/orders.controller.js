@@ -4,30 +4,28 @@ const catchAsync = require("../utils/catchAsync");
 
 // getall --yahia
 exports.getAllOrders = catchAsync(async (req, res, next) => {
-const orders = await Orders.find({})
-        // .populate("user", "name email")
-        // .populate("products.product", "name price image")
+    const orders = await Orders.find()
+        .populate("product", "name price image");
 
     res.status(200).json({
-        success : true ,
+        success: true,
         message: "Orders fetched successfully",
-        totalOrders : orders.length ,
-        data : orders
+        totalOrders: orders.length,
+        data: orders
     })
 })
 
 // getone --yahia
 exports.getOneOrder = catchAsync(async (req, res, next) => {
-const order = await Orders.findOne({ _id : req.params.id})
-        // .populate("user", "name email")
-        // .populate("products.product", "name price image")
+    const order = await Orders.findOne({ _id: req.params.id })
+        .populate("product", "name price image");
 
-    if (!order) return next(new AppError(404, `No order found with this id ${req.params.id}`))
+    if (!order) return next(new appError(404, `No order found with this id ${req.params.id}`))
 
     res.status(200).json({
-        success : true ,
+        success: true,
         message: "Order fetched successfully",
-        data : order
+        data: order
     })
 })
 
@@ -57,14 +55,14 @@ exports.shipOrder = catchAsync(async (req, res, next) => {
 })
 
 // getuserorders --yahia
-exports.getUserOrders = catchAsync(async (req, res, next) => { //edite yaya
-const orders = await Orders.find({ user : req.user._id})
-        // .populate("products.product", "name price image")
+exports.getUserOrders = catchAsync(async (req, res, next) => {
+    const orders = await Orders.find({ user: req.params.userId })
+        .populate("product", "name price image");
 
     res.status(200).json({
-        success : true ,
+        success: true,
         message: "Order fetched successfully",
-        totalOrders : orders.length ,
-        data : orders
+        totalOrders: orders.length,
+        data: orders
     })
 })
