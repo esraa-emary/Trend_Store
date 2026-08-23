@@ -3,8 +3,9 @@ const appError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
 exports.toggleWishlist = catchAsync(async (req, res, next) => {
-    // body من userId مؤقتاً بناخد الـ  Authentication لحد ما نظبط الـ 
-    const { userId, productId } = req.body;
+    const { productId } = req.body;
+    const userId = req.user._id; // من التوكن مباشرة
+
     let wishlist = await Wishlist.findOne({ user: userId });
 
     if (!wishlist) {
@@ -12,9 +13,9 @@ exports.toggleWishlist = catchAsync(async (req, res, next) => {
     } else {
         const isExist = wishlist.products.includes(productId);
         if (isExist) {
-            wishlist.products.pull(productId); // حذف لو موجود
+            wishlist.products.pull(productId);
         } else {
-            wishlist.products.addToSet(productId); // إضافة لو مش موجود
+            wishlist.products.addToSet(productId);
         }
         await wishlist.save();
     }

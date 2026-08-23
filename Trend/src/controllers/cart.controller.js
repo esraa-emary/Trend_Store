@@ -4,7 +4,8 @@ const appError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
 exports.addToCart = catchAsync(async (req, res, next) => {
-    const { userId, productId, quantity } = req.body;
+    const { productId, quantity } = req.body;
+    const userId = req.user._id; // من التوكن مباشرة
     
     const product = await Products.findById(productId);
     if (!product) return next(new appError(404, "Product not found"));
@@ -20,13 +21,12 @@ exports.addToCart = catchAsync(async (req, res, next) => {
         const itemIndex = cart.cartItems.findIndex(item => item.product.toString() === productId);
         
         if (itemIndex > -1) {
-            cart.cartItems[itemIndex].quantity += (quantity || 1); // تحديث الكمية
+            cart.cartItems[itemIndex].quantity += (quantity || 1);
         } else {
-            cart.cartItems.push({ product: productId, quantity: quantity || 1, price: product.price }); // منتج جديد
+            cart.cartItems.push({ product: productId, quantity: quantity || 1, price: product.price });
         }
     }
 
-    // حساب الإجمالي
     cart.totalCartPrice = cart.cartItems.reduce((acc, item) => acc + (item.quantity * item.price), 0);
     await cart.save();
 

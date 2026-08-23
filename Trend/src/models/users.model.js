@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
     name: {
@@ -24,6 +24,11 @@ const userSchema = mongoose.Schema({
         default: "user",
         select: false
     },
+    isDeleted: {
+        type: Boolean,
+        default: false,
+        select: false
+    },
     isActive: {
         type: Boolean,
         default: false
@@ -40,8 +45,7 @@ const userSchema = mongoose.Schema({
 }, {
     timestamps: true,
     versionKey: false
-})
+});
 
-const Users = mongoose.model("users", userSchema)
-
-module.exports = Users
+const Users = mongoose.model("users", userSchema);
+module.exports = Users;
