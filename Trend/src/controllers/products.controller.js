@@ -65,7 +65,7 @@ exports.hideProduct = catchAsync(async (req, res, next) => {
         {
             new: true
         }
-    );
+    ).select("+isDeleted +deletedAt");
 
     if (!product) next(new appError(404, `No product found`));
 

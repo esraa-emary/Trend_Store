@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const productsRouter = require("./routes/products.route");
 const usersRouter = require("./routes/users.route");
 const ordersRouter = require("./routes/orders.route");
+const authRouter = require("./routes/auth.route");
 const globalError = require("./middlewares/globalError");
 const app = express()
 
@@ -21,6 +22,7 @@ app.get("/" , (req,res) => {
 app.use("/products",productsRouter);
 app.use("/users",usersRouter);
 app.use("/orders",ordersRouter);
+app.use("/auth", authRouter);
 
 app.use((req,res) => {
     res.status(404).json({

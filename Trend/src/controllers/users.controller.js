@@ -29,13 +29,3 @@ exports.getOneUser = catchAsync(async (req, res, next) => {
         data: user
     });
 })
-
-// add --esraa
-exports.addUser = catchAsync(async (req, res, next) => {
-    const user = await Users.create(req.body);
-    res.status(200).json({
-        success: true,
-        message: "User added successfully",
-        data: user
-    })
-})
