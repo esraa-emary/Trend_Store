@@ -3,7 +3,7 @@ const appError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
 exports.getAllOrders = catchAsync(async (req, res, next) => { //edite yaya
- const orders = await Order.find({isDeleted : false})
+const orders = await Order.find({isDeleted : false})
         .populate("user", "name email")
         .populate("products.product", "name price image")
 
@@ -14,18 +14,18 @@ exports.getAllOrders = catchAsync(async (req, res, next) => { //edite yaya
     })
 })
 
-    exports.getOneOrder = catchAsync(async (req, res, next) => { // edite yaya
-    const order = await Order.findOne({isDeleted : false , _id : req.params.id})
-            .populate("user", "name email")
-            .populate("products.product", "name price image")
+exports.getOneOrder = catchAsync(async (req, res, next) => { // edite yaya
+const order = await Order.findOne({isDeleted : false , _id : req.params.id})
+        .populate("user", "name email")
+        .populate("products.product", "name price image")
 
-        if (!order) return next(new AppError(404, `No order found with this id ${req.params.id}`))
+    if (!order) return next(new AppError(404, `No order found with this id ${req.params.id}`))
 
-        res.status(200).json({
-            success : true ,
-            data : order
-        })
+    res.status(200).json({
+        success : true ,
+        data : order
     })
+})
 
 // add ---esraa
 exports.addOrder = catchAsync(async (req, res, next) => {
@@ -50,8 +50,8 @@ exports.shipOrder = catchAsync(async (req, res, next) => {
     })
 })
 
-exports.getUserOrders = catchAsync(async (req, res, next) => { //edite
- const orders = await Order.find({isDeleted : false , user : req.user._id})
+exports.getUserOrders = catchAsync(async (req, res, next) => { //edite yaya
+const orders = await Order.find({isDeleted : false , user : req.user._id})
         .populate("products.product", "name price image")
 
     res.status(200).json({
