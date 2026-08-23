@@ -2,12 +2,33 @@ const Orders = require("../models/orders.model.js");
 const appError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
+// getall --yahia
 exports.getAllOrders = catchAsync(async (req, res, next) => {
+const orders = await Orders.find({})
+        // .populate("user", "name email")
+        // .populate("products.product", "name price image")
 
+    res.status(200).json({
+        success : true ,
+        message: "Orders fetched successfully",
+        totalOrders : orders.length ,
+        data : orders
+    })
 })
 
+// getone --yahia
 exports.getOneOrder = catchAsync(async (req, res, next) => {
+const order = await Orders.findOne({ _id : req.params.id})
+        // .populate("user", "name email")
+        // .populate("products.product", "name price image")
 
+    if (!order) return next(new AppError(404, `No order found with this id ${req.params.id}`))
+
+    res.status(200).json({
+        success : true ,
+        message: "Order fetched successfully",
+        data : order
+    })
 })
 
 // add --esraa
@@ -35,6 +56,15 @@ exports.shipOrder = catchAsync(async (req, res, next) => {
     })
 })
 
-exports.getUserOrders = catchAsync(async (req, res, next) => {
+// getuserorders --yahia
+exports.getUserOrders = catchAsync(async (req, res, next) => { //edite yaya
+const orders = await Orders.find({ user : req.user._id})
+        // .populate("products.product", "name price image")
 
+    res.status(200).json({
+        success : true ,
+        message: "Order fetched successfully",
+        totalOrders : orders.length ,
+        data : orders
+    })
 })
