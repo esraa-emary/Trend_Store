@@ -2,10 +2,10 @@ const Orders = require("../models/orders.model.js");
 const appError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
-exports.getAllOrders = catchAsync(async (req, res, next) => { //edite yaya
-const orders = await Order.find({isDeleted : false})
+exports.getAllOrders = catchAsync(async (req, res, next) => {//yaya edit
+    const orders = await Orders.find()
         .populate("user", "name email")
-        .populate("products.product", "name price image")
+        .populate("product", "name price image")
 
     res.status(200).json({
         success : true ,
@@ -14,19 +14,18 @@ const orders = await Order.find({isDeleted : false})
     })
 })
 
-exports.getOneOrder = catchAsync(async (req, res, next) => { // edite yaya
-const order = await Order.findOne({isDeleted : false , _id : req.params.id})
+exports.getOneOrder = catchAsync(async (req, res, next) => { // yaya edit
+    const order = await Orders.findOne({ _id : req.params.id })
         .populate("user", "name email")
-        .populate("products.product", "name price image")
+        .populate("product", "name price image")
 
-    if (!order) return next(new AppError(404, `No order found with this id ${req.params.id}`))
+    if (!order) return next(new appError(404, `No order found with this id ${req.params.id}`))
 
     res.status(200).json({
         success : true ,
         data : order
     })
 })
-
 // add ---esraa
 exports.addOrder = catchAsync(async (req, res, next) => {
     const order = await Orders.create(req.body);
@@ -50,13 +49,11 @@ exports.shipOrder = catchAsync(async (req, res, next) => {
     })
 })
 
-exports.getUserOrders = catchAsync(async (req, res, next) => { //edite yaya
-const orders = await Order.find({isDeleted : false , user : req.user._id})
-        .populate("products.product", "name price image")
-
+exports.getUserOrders = catchAsync(async (req, res, next) => { //yaya edit
+    const orders = await Orders.find({ user: req.params.userId }) .populate("product", "name price image"); 
     res.status(200).json({
         success : true ,
         totalOrders : orders.length ,
         data : orders
-    })
-})
+    });
+});
