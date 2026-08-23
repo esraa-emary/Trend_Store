@@ -1,18 +1,18 @@
-const { getAllProducts, getOneProduct, addProduct, updateProduct, hideProduct } = require("../controllers/products.controller.js");
+const { getAllProducts, getOneProduct, addProduct, updateProduct, hideProduct, getHiddenProducts } = require("../controllers/products.controller.js");
 const router = require("express").Router()
 
 router.route("/")
-.get(getAllProducts)
-.post(addProduct)
+    .get(getAllProducts)
+    .post(addProduct)
+
+router.route("/hidden")
+    .get(getHiddenProducts);
 
 router.route("/:id")
-.get(getOneProduct)
-.patch(updateProduct)
-.delete(hideProduct)
+    .get(getOneProduct)
+    .patch(updateProduct)
 
-
-// rout for the hided products --samah
-router.patch("/:id/hide", hideProduct);
-
+router.route("/:id/hide")
+    .patch(hideProduct);
 
 module.exports = router

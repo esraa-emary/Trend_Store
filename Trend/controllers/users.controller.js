@@ -2,17 +2,18 @@ const Users = require("../models/users.model.js");
 const appError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
-// getall ---ammar
+// getall --ammar
 exports.getAllUsers = catchAsync(async (req, res, next) => {
     const users = await Users.find();
 
     res.status(200).json({
+        success: true,
         message: "Users fetched successfully",
-        users
+        data: users
     });
 })
 
-// getone ---ammar
+// getone --ammar
 exports.getOneUser = catchAsync(async (req, res, next) => {
     const user = await Users.findById(req.params.id);
 
@@ -23,16 +24,18 @@ exports.getOneUser = catchAsync(async (req, res, next) => {
     }
 
     res.status(200).json({
+        success: true,
         message: "User fetched successfully",
-        user
+        data: user
     });
 })
 
-// add ---esraa
+// add --esraa
 exports.addUser = catchAsync(async (req, res, next) => {
     const user = await Users.create(req.body);
     res.status(200).json({
         success: true,
-        message: "User added successfully"
+        message: "User added successfully",
+        data: user
     })
 })

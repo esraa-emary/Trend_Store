@@ -10,12 +10,13 @@ exports.getOneOrder = catchAsync(async (req, res, next) => {
 
 })
 
-// add ---esraa
+// add --esraa
 exports.addOrder = catchAsync(async (req, res, next) => {
     const order = await Orders.create(req.body);
     res.status(200).json({
         success: true,
-        message: "Order added successfully"
+        message: "Order added successfully",
+        data: order
     })
 })
 
@@ -29,7 +30,8 @@ exports.shipOrder = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        message: "Order accepted successfully"
+        message: "Order accepted successfully",
+        data: order
     })
 })
 

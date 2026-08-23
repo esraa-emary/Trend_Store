@@ -7,10 +7,9 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
     const products = await Products.find();
     res.status(200).json({
         status: "success",
+        message: "products fetched successfully",
         results: products.length,
-        data: {
-            products
-        }
+        data: products
     });
 
 });
@@ -19,27 +18,24 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
 exports.getOneProduct = catchAsync(async (req, res, next) => {
     const product = await Products.findById(req.params.id);
 
-    if (!product) return res.status(404).json({
-        success: false,
-        message: "no product found"
-    })
+    if (!product) next(new appError(404, `No product found`));
 
     console.log(req.params);
 
     res.status(200).json({
         success: true,
+        message: "product fetched successfully",
         data: product
     });
 })
 
 // add --nagham
 exports.addProduct = catchAsync(async (req, res, next) => {
-    const newProduct = await Products.create(req.body);
+    const newProduct = await Products.create(req.body).select("+isDeleted +deletedAt");
     res.status(201).json({
         status: "success",
-        data: {
-            product: newProduct
-        }
+        message: "product added successfully",
+        data: newProduct
     });
 })
 
@@ -48,15 +44,13 @@ exports.updateProduct = catchAsync(async (req, res, next) => {
     const updateProduct = await Products.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true
-    });
-    if (!updateProduct) {
-        return next(new appError("Product not found", 404));
-    }
+    }).select("+isDeleted +deletedAt");
+    if (!updateProduct) return next(new appError(404, "Product not found"));
+
     res.status(200).json({
         status: "success",
-        data: {
-            product: updateProduct
-        }
+        message: "product updated successfully",
+        data: updateProduct
     });
 })
 
@@ -73,14 +67,25 @@ exports.hideProduct = catchAsync(async (req, res, next) => {
         }
     );
 
-    if (!product) return res.status(404).json({
-        success: false,
-        message: "no product found"
-    })
+    if (!product) next(new appError(404, `No product found`));
 
     res.status(200).json({
         success: true,
+        message: "product hidden successfully",
         data: product
+    });
+})
+
+// gethidden --esraa
+exports.getHiddenProducts = catchAsync(async (req, res, next) => {
+    const products = await Products.find({ isDeleted: true }).select("+isDeleted +deletedAt");
+
+    if (!products) next(new appError(404, `No product found`));
+
+    res.status(200).json({
+        success: true,
+        message: "hidded products fetched successfully",
+        data: products
     });
 })
 
@@ -98,6 +103,7 @@ exports.filterProducts = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
+        message: "products filterd successfully",
         data: products
     });
 })
