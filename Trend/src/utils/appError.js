@@ -5,3 +5,5 @@ class appError extends Error {
         this.isOperational = true
     }
 }
+
+module.exports = appError;

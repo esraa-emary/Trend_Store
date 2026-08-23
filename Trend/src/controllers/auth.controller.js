@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/users.model");
-const AppError = require("../utils/appError");
+const appError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
 
@@ -36,7 +36,6 @@ const createSendToken = (user, statusCode, res) => {
 
 
 // Register / Signup
-
 exports.register = catchAsync(async (req, res, next) => {
 
   const {
@@ -51,9 +50,9 @@ exports.register = catchAsync(async (req, res, next) => {
   if (!name || !email || !password) {
 
     return next(
-      new AppError(
-        "Please provide name, email and password.",
-        400
+      new appError(
+        400,
+        "Please provide name, email and password."
       )
     );
   }
@@ -65,9 +64,8 @@ exports.register = catchAsync(async (req, res, next) => {
   if (existingUser) {
 
     return next(
-      new AppError(
-        "Email already in use.",
-        400
+      new appError(400,
+        "Email already in use."
       )
     );
   }
@@ -92,7 +90,6 @@ exports.register = catchAsync(async (req, res, next) => {
 
 
 // Login
-
 exports.login = catchAsync(async (req, res, next) => {
 
   const {
@@ -105,9 +102,8 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!email || !password) {
 
     return next(
-      new AppError(
-        "Please provide email and password.",
-        400
+      new appError(400,
+        "Please provide email and password."
       )
     );
   }
@@ -124,9 +120,8 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!user) {
 
     return next(
-      new AppError(
-        "Incorrect email or password.",
-        401
+      new appError(401,
+        "Incorrect email or password."
       )
     );
   }
@@ -143,9 +138,8 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!isCorrectPassword) {
 
     return next(
-      new AppError(
-        "Incorrect email or password.",
-        401
+      new appError(401,
+        "Incorrect email or password."
       )
     );
   }
@@ -155,9 +149,8 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!user.isActive) {
 
     return next(
-      new AppError(
-        "This account has been deactivated.",
-        401
+      new appError(401,
+        "This account has been deactivated."
       )
     );
   }
