@@ -5,7 +5,12 @@ const morgan = require("morgan");
 const productsRouter = require("./routes/products.route");
 const usersRouter = require("./routes/users.route");
 const ordersRouter = require("./routes/orders.route");
+// إضافة مسارات السلة والمفضلة
+const wishlistRouter = require("./routes/wishlist.route");
+const cartRouter = require("./routes/cart.route");
+
 const globalError = require("./middlewares/globalError");
+
 const app = express()
 
 app.use(express.json());
@@ -18,9 +23,12 @@ app.get("/" , (req,res) => {
     })
 })
 
-app.use("/products",productsRouter);
-app.use("/users",usersRouter);
-app.use("/orders",ordersRouter);
+app.use("/products", productsRouter);
+app.use("/users", usersRouter);
+app.use("/orders", ordersRouter);
+// تفعيل مسارات السلة والمفضلة
+app.use("/wishlist", wishlistRouter);
+app.use("/cart", cartRouter);
 
 app.use((req,res) => {
     res.status(404).json({
