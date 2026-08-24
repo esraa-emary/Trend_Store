@@ -28,6 +28,6 @@ const ordersSchema = mongoose.Schema({
     versionKey: false
 })
 
-const Orders = mongoose.model("orders", ordersSchema)
+const Orders = mongoose.model("order", ordersSchema)
 
 module.exports = Orders

@@ -1,7 +1,13 @@
-const { register, login } = require("../controllers/auth.controller");
+const { signup, confirmEmail, login, forgetPassword, resetPassword } = require("../controllers/auth.controller")
+
 const router = require("express").Router()
 
-router.post("/signup", register);
-router.post("/login", login);
 
-module.exports = router;
+router.route("/signup").post(signup)
+router.route("/confirm-email").post(confirmEmail)
+router.route("/login").post(login)
+router.route("/forget-password").post(forgetPassword)
+router.route("/reset-password/:token").post(resetPassword)
+
+
+module.exports = router

@@ -1,10 +1,10 @@
-const Products = require("../models/products.model.js");
-const appError = require("../utils/appError.js");
+const Product = require("../models/product.model.js");
+const AppError = require("../utils/AppError.js");
 const catchAsync = require("../utils/catchAsync.js");
 
 // getall --nagham
 exports.getAllProducts = catchAsync(async (req, res, next) => {
-    const products = await Products.find();
+    const products = await Product.find();
     res.status(200).json({
         status: "success",
         message: "products fetched successfully",
@@ -16,9 +16,9 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
 
 // getone --samah
 exports.getOneProduct = catchAsync(async (req, res, next) => {
-    const product = await Products.findById(req.params.id);
+    const product = await Product.findById(req.params.id);
 
-    if (!product) next(new appError(404, `No product found`));
+    if (!product) next(new AppError(404, `No product found`));
 
     console.log(req.params);
 
@@ -31,7 +31,20 @@ exports.getOneProduct = catchAsync(async (req, res, next) => {
 
 // add --nagham
 exports.addProduct = catchAsync(async (req, res, next) => {
-    const newProduct = await Products.create(req.body).select("+isDeleted +deletedAt");
+    const {
+        name,
+        price,
+        category,
+        quantity,
+        image,
+        description
+    } = req.body;
+
+    if (!name || !price || !category || !quantity || !image || !description) {
+        return next(new AppError(400, "Please provide name, price, category, quantity, image, and description"));
+    }
+
+    const newProduct = await Product.create(req.body).select("+isDeleted +deletedAt");
     res.status(201).json({
         status: "success",
         message: "product added successfully",
@@ -41,11 +54,11 @@ exports.addProduct = catchAsync(async (req, res, next) => {
 
 // update --nagham
 exports.updateProduct = catchAsync(async (req, res, next) => {
-    const updateProduct = await Products.findByIdAndUpdate(req.params.id, req.body, {
+    const updateProduct = await Product.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true
     }).select("+isDeleted +deletedAt");
-    if (!updateProduct) return next(new appError(404, "Product not found"));
+    if (!updateProduct) return next(new AppError(404, "Product not found"));
 
     res.status(200).json({
         status: "success",
@@ -56,7 +69,7 @@ exports.updateProduct = catchAsync(async (req, res, next) => {
 
 // hide --samah
 exports.hideProduct = catchAsync(async (req, res, next) => {
-    const product = await Products.findByIdAndUpdate(
+    const product = await Product.findByIdAndUpdate(
         req.params.id,
         {
             isDeleted: true,
@@ -67,7 +80,7 @@ exports.hideProduct = catchAsync(async (req, res, next) => {
         }
     ).select("+isDeleted +deletedAt");
 
-    if (!product) next(new appError(404, `No product found`));
+    if (!product) next(new AppError(404, `No product found`));
 
     res.status(200).json({
         success: true,
@@ -78,9 +91,9 @@ exports.hideProduct = catchAsync(async (req, res, next) => {
 
 // gethidden --esraa
 exports.getHiddenProducts = catchAsync(async (req, res, next) => {
-    const products = await Products.find({ isDeleted: true }).select("+isDeleted +deletedAt");
+    const products = await Product.find({ isDeleted: true }).select("+isDeleted +deletedAt");
 
-    if (!products) next(new appError(404, `No product found`));
+    if (!products) next(new AppError(404, `No product found`));
 
     res.status(200).json({
         success: true,
@@ -99,7 +112,7 @@ exports.filterProducts = catchAsync(async (req, res, next) => {
         filter.category = req.query.category;
     }
 
-    const products = await Products.find(filter);
+    const products = await Product.find(filter);
 
     res.status(200).json({
         success: true,

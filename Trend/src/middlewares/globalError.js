@@ -1,10 +1,10 @@
-const appError = require("../utils/appError");
+const AppError = require("../utils/AppError");
 
 const globalError = (err, req, res, next) => {
     let error = err;
 
     if (err.name === "ValidationError") {
-        error = new appError(400, "Validation Error");
+        error = new AppError(400, "Validation Error");
     }
 
     res.status(error.status || 500).json({

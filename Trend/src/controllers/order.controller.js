@@ -1,10 +1,11 @@
-const Orders = require("../models/orders.model.js");
-const appError = require("../utils/appError");
-const catchAsync = require("../utils/catchAsync");
+const Order = require("../models/order.model.js");
+const AppError = require("../utils/AppError.js");
+const catchAsync = require("../utils/catchAsync.js");
 
 // getall --yahia
 exports.getAllOrders = catchAsync(async (req, res, next) => {
-    const orders = await Orders.find()
+    const orders = await Order.find()
+        .populate("user", "name email")
         .populate("product", "name price image");
 
     res.status(200).json({
@@ -17,10 +18,11 @@ exports.getAllOrders = catchAsync(async (req, res, next) => {
 
 // getone --yahia
 exports.getOneOrder = catchAsync(async (req, res, next) => {
-    const order = await Orders.findOne({ _id: req.params.id })
+    const order = await Order.findById(req.params.id)
+        .populate("user", "name email")
         .populate("product", "name price image");
 
-    if (!order) return next(new appError(404, `No order found with this id ${req.params.id}`))
+    if (!order) return next(new AppError(404, `No order found with this id ${req.params.id}`))
 
     res.status(200).json({
         success: true,
@@ -31,7 +33,21 @@ exports.getOneOrder = catchAsync(async (req, res, next) => {
 
 // add --esraa
 exports.addOrder = catchAsync(async (req, res, next) => {
-    const order = await Orders.create(req.body);
+    const {
+        user,
+        product,
+        quantity
+    } = req.body;
+
+    if (!user || !product || !quantity) {
+        return next(new AppError(400, "Please provide user id, product id, and quantity."));
+    }
+
+    const order = await Order.create({
+        ...req.body,
+        user: req.user._id
+    });
+
     res.status(200).json({
         success: true,
         message: "Order added successfully",
@@ -41,8 +57,8 @@ exports.addOrder = catchAsync(async (req, res, next) => {
 
 // ship --esraa
 exports.shipOrder = catchAsync(async (req, res, next) => {
-    const order = await Orders.findById(req.params.id);
-    if (!order) return next(new appError(404, `No order found with this id ${req.params.id}`));
+    const order = await Order.findById(req.params.id);
+    if (!order) return next(new AppError(404, `No order found with this id ${req.params.id}`));
 
     order.isShipped = true;
     await order.save();
@@ -56,7 +72,7 @@ exports.shipOrder = catchAsync(async (req, res, next) => {
 
 // getuserorders --yahia
 exports.getUserOrders = catchAsync(async (req, res, next) => {
-    const orders = await Orders.find({ user: req.params.userId })
+    const orders = await Order.find({ user: req.user._id })
         .populate("product", "name price image");
 
     res.status(200).json({
