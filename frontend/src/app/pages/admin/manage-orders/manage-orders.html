@@ -1,0 +1,26 @@
+<div class="vh-100 d-flex flex-column">
+    <div class="p-4">
+        <h2 class="fs-1">Orders Management</h2>
+    </div>
+
+    <div class="table-responsive overflow-auto" style="max-height: 85vh;">
+        <table class="table table-fixed bg-warning-subtle table-hover p-4 w-100" style="table-layout: fixed;">
+            <thead class="table-dark fs-4">
+                <tr>
+                    @for (key of columns; track key) {
+                    <th scope="col" class="text-center">{{ key | titlecase }}</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (order of orders; track order.id) {
+                <tr class="border-top border-dark" >
+                    @for (key of columns; track key) {
+                    <td style="background-color: var(--first-color);" class="text-center">{{ order[key] }}</td>
+                    }
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

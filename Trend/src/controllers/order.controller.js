@@ -1,4 +1,5 @@
 const Order = require("../models/order.model.js");
+const Product = require("../models/product.model.js");
 const AppError = require("../utils/AppError.js");
 const catchAsync = require("../utils/catchAsync.js");
 
@@ -6,7 +7,7 @@ const catchAsync = require("../utils/catchAsync.js");
 exports.getAllOrders = catchAsync(async (req, res, next) => {
     const orders = await Order.find()
         .populate("user", "name email")
-        .populate("product", "name price image");
+        .populate("products.product", "name price image");
 
     res.status(200).json({
         success: true,
@@ -20,7 +21,7 @@ exports.getAllOrders = catchAsync(async (req, res, next) => {
 exports.getOneOrder = catchAsync(async (req, res, next) => {
     const order = await Order.findById(req.params.id)
         .populate("user", "name email")
-        .populate("product", "name price image");
+        .populate("products.product", "name price image");
 
     if (!order) return next(new AppError(404, `No order found with this id ${req.params.id}`))
 
@@ -35,20 +36,32 @@ exports.getOneOrder = catchAsync(async (req, res, next) => {
 exports.addOrder = catchAsync(async (req, res, next) => {
     const {
         user,
-        product,
-        quantity
+        products
     } = req.body;
 
-    if (!user || !product || !quantity) {
-        return next(new AppError(400, "Please provide user id, product id, and quantity."));
+    if (!user || !products || !Array.isArray(products) || products.length === 0) {
+        return next(new AppError(400, "Please provide user id and products array with items."));
     }
 
+    const productIds = products.map(item => item.product);
+    const dbProducts = await Product.find({ _id: { $in: productIds } });
+
+    if (dbProducts.length !== productIds.length) {
+        return next(new AppError(400, "One or more products not found."));
+    }
+
+    const total = products.reduce((total, item) => {
+        const dbProduct = dbProducts.find(p => p._id.toString() === item.product.toString());
+        return total + (dbProduct.price * item.quantity);
+    }, 0);
+
     const order = await Order.create({
-        ...req.body,
-        user: req.user._id
+        user: req.user._id,
+        products: products,
+        totalPrice: total
     });
 
-    res.status(200).json({
+    res.status(201).json({
         success: true,
         message: "Order added successfully",
         data: order
@@ -73,7 +86,7 @@ exports.shipOrder = catchAsync(async (req, res, next) => {
 // getuserorders --yahia
 exports.getUserOrders = catchAsync(async (req, res, next) => {
     const orders = await Order.find({ user: req.user._id })
-        .populate("product", "name price image");
+        .populate("products.product", "name price image");
 
     res.status(200).json({
         success: true,
