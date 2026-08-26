@@ -1,0 +1,88 @@
+.account-wrapper {
+  position: relative;
+}
+
+.account-menu {
+  position: absolute;
+
+  top: calc(100% + 14px);
+  right: 0;
+
+  width: 220px;
+
+  background: #fffdf8;
+
+  border: 1px solid #ded9cf;
+
+  box-shadow: 0 12px 30px rgba(23, 19, 15, 0.08);
+
+  padding: 10px;
+
+  z-index: 1000;
+}
+
+.menu-user {
+  display: flex;
+
+  flex-direction: column;
+
+  padding: 10px;
+}
+
+.menu-role {
+  font-size: 8px;
+
+  letter-spacing: 1.8px;
+
+  color: #8a8379;
+
+  margin-bottom: 5px;
+}
+
+.menu-name {
+  font-size: 13px;
+
+  color: #17130f;
+}
+
+.menu-divider {
+  height: 1px;
+
+  background: #e7e1d7;
+
+  margin: 6px 0;
+}
+
+.account-menu a,
+.logout-button {
+  width: 100%;
+
+  display: block;
+
+  box-sizing: border-box;
+
+  padding: 11px 10px;
+
+  background: transparent;
+
+  border: none;
+
+  color: #29251f;
+
+  text-decoration: none;
+
+  text-align: left;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.account-menu a:hover,
+.logout-button:hover {
+  background: #f3efe6;
+}
+
+.logout-button {
+  color: #8b3325;
+}

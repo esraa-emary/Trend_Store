@@ -1,0 +1,34 @@
+.account-page {
+  min-height: 100vh;
+
+  padding: 60px;
+
+  background: #f8f5ec;
+
+  color: #17130f;
+}
+
+.account-page h1 {
+  margin-bottom: 30px;
+
+  font-family:
+    Georgia,
+    'Times New Roman',
+    serif;
+
+  font-weight: 400;
+}
+
+.account-info {
+  max-width: 500px;
+
+  background: #fffdf8;
+
+  border: 1px solid #ded9cf;
+
+  padding: 25px;
+}
+
+.account-info p {
+  margin: 0 0 15px;
+}

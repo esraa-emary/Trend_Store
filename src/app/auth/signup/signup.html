@@ -1,0 +1,285 @@
+<div class="auth-screen">
+
+  <div class="auth-card">
+
+    <div class="auth-brand">
+
+      <span class="auth-brand-mark">
+        ⬡
+      </span>
+
+      <span class="auth-brand-name">
+        My Store
+      </span>
+
+    </div>
+
+
+    <h1>
+      Create your account
+    </h1>
+
+    <p class="auth-sub">
+      Join My Store and start shopping.
+    </p>
+
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      class="auth-form"
+    >
+
+      <!-- Name -->
+
+      <label class="field">
+
+        <span class="field-label">
+          Name
+        </span>
+
+        <input
+          type="text"
+          formControlName="name"
+          placeholder="Your name"
+          autocomplete="name"
+        />
+
+        @if (
+          form.controls['name'].touched &&
+          form.controls['name'].invalid
+        ) {
+
+          <span class="field-error">
+
+            @if (
+              form.controls['name'].errors?.['required']
+            ) {
+              Name is required.
+            }
+
+            @if (
+              form.controls['name'].errors?.['minlength']
+            ) {
+              Name must be at least 3 characters.
+            }
+
+            @if (
+              form.controls['name'].errors?.['maxlength']
+            ) {
+              Name must be below 30 characters.
+            }
+
+          </span>
+
+        }
+
+      </label>
+
+
+      <!-- Email -->
+
+      <label class="field">
+
+        <span class="field-label">
+          Email
+        </span>
+
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+        />
+
+        @if (
+          form.controls['email'].touched &&
+          form.controls['email'].invalid
+        ) {
+
+          <span class="field-error">
+            Enter a valid email address.
+          </span>
+
+        }
+
+      </label>
+
+
+      <!-- Phone -->
+
+      <label class="field">
+
+        <span class="field-label">
+          Phone number
+        </span>
+
+        <input
+          type="tel"
+          formControlName="phoneNumber"
+          placeholder="01000000000"
+          autocomplete="tel"
+        />
+
+        @if (
+          form.controls['phoneNumber'].touched &&
+          form.controls['phoneNumber'].invalid
+        ) {
+
+          <span class="field-error">
+            Phone number is required.
+          </span>
+
+        }
+
+      </label>
+
+
+      <!-- Password -->
+
+      <label class="field">
+
+        <span class="field-label">
+          Password
+        </span>
+
+        <div class="password-wrapper">
+
+          <input
+            [type]="
+              showPassword()
+                ? 'text'
+                : 'password'
+            "
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="new-password"
+          />
+
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="
+              showPassword()
+                ? 'Hide password'
+                : 'Show password'
+            "
+          >
+
+            @if (showPassword()) {
+
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+                />
+
+                <line
+                  x1="1"
+                  y1="1"
+                  x2="23"
+                  y2="23"
+                />
+
+              </svg>
+
+            } @else {
+
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+
+                <path
+                  d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"
+                />
+
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="3"
+                />
+
+              </svg>
+
+            }
+
+          </button>
+
+        </div>
+
+
+        @if (
+          form.controls['password'].touched &&
+          form.controls['password'].invalid
+        ) {
+
+          <span class="field-error">
+            Password must be at least 6 characters.
+          </span>
+
+        }
+
+      </label>
+
+
+      <!-- Error -->
+
+      @if (errorMessage()) {
+
+        <div class="auth-error-banner">
+          {{ errorMessage() }}
+        </div>
+
+      }
+
+
+      <!-- Submit -->
+
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="isSubmitting()"
+      >
+
+        {{
+          isSubmitting()
+            ? 'Creating account…'
+            : 'Create account'
+        }}
+
+      </button>
+
+    </form>
+
+
+    <!-- Login link -->
+
+    <p class="auth-footer-text">
+
+      Already have an account?
+
+      <a
+        routerLink="/login"
+        class="auth-link-inline"
+      >
+        Sign in
+      </a>
+
+    </p>
+
+  </div>
+
+</div>
