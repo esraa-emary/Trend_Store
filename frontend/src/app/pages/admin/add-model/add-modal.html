@@ -1,0 +1,13 @@
+<div class="modal fade show d-block" tabindex="-1" (click)="closed.emit()">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Product</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="closed.emit()"></button>
+      </div>
+      <div class="modal-body">
+        <app-product-form [isPage]="false" [btnText]="'Add Product'" (productSubmit)="add($event)"></app-product-form>
+      </div>
+    </div>
+  </div>
+</div>

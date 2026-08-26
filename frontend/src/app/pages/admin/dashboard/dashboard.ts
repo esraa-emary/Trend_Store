@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { OrdersService } from '../../../services/orders-service/orders-service';
+import { UsersService } from '../../../services/users-service/users-service';
+import { ProductsService } from '../../../services/products-service/products-service';
+import { retry } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,106 +14,53 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./dashboard.css']
 })
 export class Dashboard {
+  ordersService = inject(OrdersService);
+  usersService = inject(UsersService);
+  productsService = inject(ProductsService);
+  router = inject(Router);
+
   stats = [
     {
       title: 'Total Users',
-      value: 150,
+      value: 0,
       icon: 'bi bi-people',
       color: 'primary'
     },
     {
       title: 'Total Products',
-      value: 45,
+      value: 0,
       icon: 'bi bi-box-seam',
       color: 'warning'
     },
     {
       title: 'Total Orders',
-      value: 230,
+      value: 0,
       icon: 'bi bi-cart-check',
       color: 'success'
     },
     {
       title: 'Revenue',
-      value: '$12,450',
+      value: '$0',
       icon: 'bi bi-currency-dollar',
       color: 'info'
     }
   ];
 
-  recentOrders = [
-    {
-      id: '246522114',
-      customer: 'Danial Donald',
-      date: '26 Jan, 2023',
-      total: 26.35,
-      status: 'Pending'
-    },
-    {
-      id: '246522115',
-      customer: 'Jane Smith',
-      date: '27 Jan, 2023',
-      total: 89.99,
-      status: 'Shipped'
-    },
-    {
-      id: '246522116',
-      customer: 'Bob Johnson',
-      date: '28 Jan, 2023',
-      total: 55.00,
-      status: 'Processing'
-    },
-    {
-      id: '246522117',
-      customer: 'Alice Brown',
-      date: '29 Jan, 2023',
-      total: 145.50,
-      status: 'Shipped'
-    },
-    {
-      id: '246522118',
-      customer: 'Charlie Wilson',
-      date: '30 Jan, 2023',
-      total: 75.00,
-      status: 'Pending'
-    }
-  ];
+  getTotalUsers(): number {
+    return this.usersService.users.value()?.totalUsers || 0;
+  }
 
-  activeUsers = [
-    {
-      id: 1,
-      name: 'John Doe',
-      email: 'john@example.com',
-      role: 'Admin',
-      status: 'Active'
-    },
-    {
-      id: 2,
-      name: 'Jane Smith',
-      email: 'jane@example.com',
-      role: 'User',
-      status: 'Active'
-    },
-    {
-      id: 3,
-      name: 'Bob Johnson',
-      email: 'bob@example.com',
-      role: 'Manager',
-      status: 'Active'
-    },
-    {
-      id: 4,
-      name: 'Alice Brown',
-      email: 'alice@example.com',
-      role: 'User',
-      status: 'Active'
-    },
-    {
-      id: 5,
-      name: 'Charlie Wilson',
-      email: 'charlie@example.com',
-      role: 'Admin',
-      status: 'Active'
-    }
-  ];
+  getTotalProducts(): number {
+    return this.productsService.products().length || 0;
+  }
+
+  getTotalOrders(): number {
+    return this.ordersService.orders.value()?.totalOrders || 0;
+  }
+
+  getTotalRevenue(): string {
+    const orders = this.ordersService.orders.value()?.data || [];
+    const total = orders.reduce((sum, order) => sum + order.totalPrice, 0);
+    return `$${total.toFixed(2)}`;
+  }
 }

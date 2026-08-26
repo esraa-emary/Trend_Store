@@ -13,4 +13,9 @@ import { UsersService } from '../../../services/users-service/users-service';
 export class ManageUsers {
   usersService = inject(UsersService);
   router = inject(Router);
+
+  getTotalActiveUsers(): number {
+    const users = this.usersService.users.value()?.data || [];
+    return users.filter(user => user.isActive === true).length;
+  }
 }

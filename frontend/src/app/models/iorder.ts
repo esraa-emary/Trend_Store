@@ -13,10 +13,11 @@ export interface IOrder {
     products: IOrderProduct[];
     totalPrice: number,
     isShipped: boolean,
-    createdAt: Date
+    createdAt: Date,
+    updatedAt: Date
 }
 
 export interface OrderResponse extends ApiResponse<IOrder[]> {
     results: number,
-    totalProducts: number
+    totalOrders: number
 }

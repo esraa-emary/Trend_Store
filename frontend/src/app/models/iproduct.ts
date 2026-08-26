@@ -8,10 +8,10 @@ export interface IProduct {
     quantity: number,
     image: string,
     description: string,
-    isDeleted: Boolean,
-    deletedAt: Date,
-    createdAt: Date,
-    updatedAt: Date
+    isDeleted: 'LIVE' | 'DRAFT',
+    deletedAt?: Date | null;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 export interface ProductResponse extends ApiResponse<IProduct[]> {

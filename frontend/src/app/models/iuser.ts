@@ -4,13 +4,18 @@ export interface IUser {
     _id: string,
     name: string,
     email: string,
+    password: string,
     phoneNumber: string,
-    role?: String,
+    role: String,
     isActive: Boolean,
-    createdAt: Date
+    confirmOTP: String,
+    OTPExpire: Date,
+    resetToken: String,
+    createdAt: Date,
+    updatedAt: Date
 }
 
 export interface UserResponse extends ApiResponse<IUser[]> {
     results: number,
-    totalProducts: number
+    totalUsers: number
 }

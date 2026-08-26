@@ -5,23 +5,69 @@
 
     <div class="container-fluid p-4">
         <div class="row g-4 mb-4">
-            @for (stat of stats; track stat.title) {
             <div class="col-md-6 col-lg-3">
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <p class="text-muted mb-1 fs-6">{{ stat.title }}</p>
-                                <h3 class="fw-bold mb-0">{{ stat.value }}</h3>
+                                <p class="text-muted mb-1 fs-6">Total Users</p>
+                                <h3 class="fw-bold mb-0">{{ getTotalUsers() }}</h3>
                             </div>
-                            <div class="bg-{{ stat.color }} bg-opacity-10 rounded p-3">
-                                <i class="bi {{ stat.icon }} fs-3 text-{{ stat.color }}"></i>
+                            <div class="bg-primary bg-opacity-10 rounded p-3">
+                                <i class="bi bi-people fs-3 text-primary"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            }
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <p class="text-muted mb-1 fs-6">Total Products</p>
+                                <h3 class="fw-bold mb-0">{{ getTotalProducts() }}</h3>
+                            </div>
+                            <div class="bg-warning bg-opacity-10 rounded p-3">
+                                <i class="bi bi-box-seam fs-3 text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <p class="text-muted mb-1 fs-6">Total Orders</p>
+                                <h3 class="fw-bold mb-0">{{ getTotalOrders() }}</h3>
+                            </div>
+                            <div class="bg-success bg-opacity-10 rounded p-3">
+                                <i class="bi bi-cart-check fs-3 text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <p class="text-muted mb-1 fs-6">Revenue</p>
+                                <h3 class="fw-bold mb-0">{{ getTotalRevenue() }}</h3>
+                            </div>
+                            <div class="bg-info bg-opacity-10 rounded p-3">
+                                <i class="bi bi-currency-dollar fs-3 text-info"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="card shadow-sm border-0 mb-4">
@@ -44,22 +90,35 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @for (order of recentOrders; track order.id) {
+                            @if (ordersService.orders.isLoading()) {
                             <tr>
-                                <td class="text-center">{{ order.id }}</td>
-                                <td class="text-center">{{ order.customer }}</td>
-                                <td class="text-center">{{ order.date }}</td>
-                                <td class="text-center fw-bold">${{ order.total }}</td>
+                                <td colspan="5" class="text-center py-4">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            } @else {
+                            @for (order of ordersService.orders.value()?.data || []; track order._id) {
+                            <tr>
+                                <td class="text-center">{{ order._id }}</td>
+                                <td class="text-center">{{ order.user?.name || 'Unknown' }}</td>
+                                <td class="text-center">{{ order.createdAt | date:'mediumDate' }}</td>
+                                <td class="text-center fw-bold">${{ order.totalPrice }}</td>
                                 <td class="text-center">
                                     <span class="badge" [ngClass]="{
-                                    'bg-warning text-dark': order.status === 'Pending',
-                                    'bg-success': order.status === 'Shipped',
-                                    'bg-info text-dark': order.status === 'Processing'
-                                }">
-                                        {{ order.status }}
+                                        'bg-warning text-dark': order.isShipped === false,
+                                        'bg-success': order.isShipped === true
+                                    }">
+                                        {{ order.isShipped ? 'Shipped' : 'Pending' }}
                                     </span>
                                 </td>
                             </tr>
+                            } @empty {
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">No orders found</td>
+                            </tr>
+                            }
                             }
                         </tbody>
                     </table>
@@ -67,10 +126,9 @@
             </div>
         </div>
 
-        <!-- Active Users Section -->
         <div class="card shadow-sm border-0">
             <div class="card-header bg-white d-flex justify-content-between align-items-center p-3 border-bottom">
-                <h5 class="fw-bold mb-0">Active Users</h5>
+                <h5 class="fw-bold mb-0">Recent Users</h5>
                 <a routerLink="/admin/users" class="btn btn-sm btn-outline-primary">
                     View All <i class="bi bi-arrow-right ms-1"></i>
                 </a>
@@ -80,7 +138,7 @@
                     <table class="table table-hover mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th class="text-center">User ID</th>
+                                <th class="text-center">#</th>
                                 <th class="text-center">Name</th>
                                 <th class="text-center">Email</th>
                                 <th class="text-center">Role</th>
@@ -88,22 +146,36 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @for (user of activeUsers; track user.id) {
+                            @if (usersService.users.isLoading()) {
                             <tr>
-                                <td class="text-center">{{ user.id }}</td>
+                                <td colspan="5" class="text-center py-4">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            } @else {
+                            @for (user of usersService.users.value()?.data?.slice(0, 5) || []; track user._id; let i =
+                            $index) {
+                            <tr>
+                                <td class="text-center">{{ i + 1 }}</td>
                                 <td class="text-center">{{ user.name }}</td>
                                 <td class="text-center">{{ user.email }}</td>
-                                <td class="text-center">{{ user.role }}</td>
+                                <td class="text-center">{{ (user.role || 'User')}}</td>
                                 <td class="text-center">
                                     <span class="badge" [ngClass]="{
-                                        'bg-success': user.status === 'Active',
-                                        'bg-danger': user.status === 'Inactive',
-                                        'bg-warning text-dark': user.status === 'Pending'
+                                        'bg-success': user.isActive === true,
+                                        'bg-danger': user.isActive === false
                                     }">
-                                        {{ user.status }}
+                                        {{ user.isActive ? 'Active' : 'Inactive' }}
                                     </span>
                                 </td>
                             </tr>
+                            } @empty {
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">No users found</td>
+                            </tr>
+                            }
                             }
                         </tbody>
                     </table>

@@ -8,10 +8,9 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: "success",
         message: "products fetched successfully",
-        results: products.length,
+        totalProducts: products.length,
         data: products
     });
-
 });
 
 // getone --samah
