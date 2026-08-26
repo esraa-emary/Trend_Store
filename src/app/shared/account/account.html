@@ -1,0 +1,39 @@
+<div class="account-page">
+
+  <h1>My Account</h1>
+
+  @if (authService.currentUser(); as user) {
+
+    <div class="account-info">
+
+      <p>
+        <strong>Name:</strong>
+        {{ user.name }}
+      </p>
+
+      <p>
+        <strong>Email:</strong>
+        {{ user.email }}
+      </p>
+
+      <p>
+        <strong>Phone:</strong>
+        {{ user.phoneNumber || 'Not provided' }}
+      </p>
+
+      <p>
+        <strong>Role:</strong>
+        {{ user.role }}
+      </p>
+
+    </div>
+
+  } @else {
+
+    <p>
+      No user data available.
+    </p>
+
+  }
+
+</div>

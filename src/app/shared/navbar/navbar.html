@@ -1,0 +1,176 @@
+<!-- Account -->
+@if (authService.isLoggedIn()) {
+
+  <div class="account-wrapper">
+
+    <button
+      type="button"
+      class="icon-button"
+      aria-label="Account"
+      (click)="toggleAccountMenu()"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="19"
+        height="19"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+      >
+        <circle
+          cx="12"
+          cy="8"
+          r="3.2"
+        />
+
+        <path
+          d="M5 20c.8-4 3.2-6 7-6s6.2 2 7 6"
+        />
+      </svg>
+    </button>
+
+
+    @if (isAccountOpen()) {
+
+      <div class="account-menu">
+
+        <!-- ADMIN -->
+        @if (authService.isAdmin()) {
+
+          <div class="menu-user">
+
+            <span class="menu-role">
+              ADMIN
+            </span>
+
+            <span class="menu-name">
+              {{ authService.currentUser()?.name }}
+            </span>
+
+          </div>
+
+          <div class="menu-divider"></div>
+
+          <a
+            routerLink="/admin/dashboard"
+            (click)="closeAccountMenu()"
+          >
+            Dashboard
+          </a>
+
+          <a
+            routerLink="/admin/products"
+            (click)="closeAccountMenu()"
+          >
+            Manage Products
+          </a>
+
+          <a
+            routerLink="/admin/orders"
+            (click)="closeAccountMenu()"
+          >
+            Manage Orders
+          </a>
+
+          <a
+            routerLink="/admin/users"
+            (click)="closeAccountMenu()"
+          >
+            Manage Users
+          </a>
+
+        }
+
+        <!-- USER -->
+        @else {
+
+          <div class="menu-user">
+
+            <span class="menu-role">
+              ACCOUNT
+            </span>
+
+            <span class="menu-name">
+              {{ authService.currentUser()?.name }}
+            </span>
+
+          </div>
+
+          <div class="menu-divider"></div>
+
+          <a
+            routerLink="/account"
+            (click)="closeAccountMenu()"
+          >
+            My Account
+          </a>
+
+          <a
+            routerLink="/orders"
+            (click)="closeAccountMenu()"
+          >
+            My Orders
+          </a>
+
+          <a
+            routerLink="/cart"
+            (click)="closeAccountMenu()"
+          >
+            Cart
+          </a>
+
+        }
+
+
+        <!-- Logout -->
+        <div class="menu-divider"></div>
+
+        <button
+          type="button"
+          class="logout-button"
+          (click)="logout()"
+        >
+          Sign out
+        </button>
+
+      </div>
+
+    }
+
+  </div>
+
+}
+
+@else {
+
+  <!-- Guest -->
+  <a
+    routerLink="/login"
+    class="icon-link"
+    aria-label="Login"
+  >
+
+    <svg
+      viewBox="0 0 24 24"
+      width="19"
+      height="19"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+    >
+
+      <circle
+        cx="12"
+        cy="8"
+        r="3.2"
+      />
+
+      <path
+        d="M5 20c.8-4 3.2-6 7-6s6.2 2 7 6"
+      />
+
+    </svg>
+
+  </a>
+
+}
