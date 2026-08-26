@@ -3,18 +3,18 @@ const mongoose = require("mongoose");
 const wishlistSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
+        ref: "User", // تأكد إنه "User" كابيتال
         required: [true, "User is required"],
-        unique: true // عشان نضمن إن كل يوزر ليه مفضلة واحدة بس
+        unique: true
     },
     products: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "products"
+        ref: "Product" // تأكد إنه "Product" كابيتال ومفرد
     }]
 }, {
     timestamps: true,
     versionKey: false
 });
 
-const Wishlist = mongoose.model("wishlist", wishlistSchema);
+const Wishlist = mongoose.model("Wishlist", wishlistSchema);
 module.exports = Wishlist;

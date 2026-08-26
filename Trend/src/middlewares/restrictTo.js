@@ -1,4 +1,4 @@
-const appError = require("../utils/appError")
+const AppError = require("../utils/AppError")
 
 
 const restrictTo = (...userRole) => (req,res,next) => {
@@ -6,7 +6,7 @@ const restrictTo = (...userRole) => (req,res,next) => {
     if (userRole.includes(role)) {
         return next()
     } else {
-        return next(new appError(403,'This route is protected for admin'))
+        return next(new AppError(403,'This route is protected for admin'))
     }
 }
 

@@ -1,0 +1,36 @@
+const { 
+    getAllProducts, 
+    getOneProduct, 
+    addProduct, 
+    updateProduct, 
+    hideProduct, 
+    getHiddenProducts, 
+    filterProducts,
+    restoreProduct 
+} = require("../controllers/product.controller.js");
+
+const auth = require("../middlewares/auth.js");
+const restrictTo = require("../middlewares/restrictTo.js");
+const router = require("express").Router();
+
+router.route("/")
+    .get(getAllProducts)
+    .post(auth, restrictTo("admin"), addProduct);
+
+router.route("/hidden")
+    .get(auth, restrictTo("admin"), getHiddenProducts);
+
+router.route("/filter/:category")
+    .get(filterProducts);
+
+router.route("/hide/:id")
+    .patch(auth, restrictTo("admin"), hideProduct);
+
+router.route("/restore/:id")
+    .patch(auth, restrictTo("admin"), restoreProduct);
+
+router.route("/:id")
+    .get(getOneProduct)
+    .patch(auth, restrictTo("admin"), updateProduct);
+
+module.exports = router;

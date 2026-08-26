@@ -1,40 +1,42 @@
 require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
+const cors = require('cors');
 
-const productsRouter = require("./routes/products.route");
-const usersRouter = require("./routes/users.route");
-const ordersRouter = require("./routes/orders.route");
+const productsRouter = require("./routes/product.route");
+const usersRouter = require("./routes/user.route");
+const ordersRouter = require("./routes/order.route");
+const authRouter = require("./routes/auth.route");
 const wishlistRouter = require("./routes/wishlist.route");
 const cartRouter = require("./routes/cart.route");
-const authRouter = require("./routes/auth.route"); // راوت الـ Auth
-
 const globalError = require("./middlewares/globalError");
-
-const app = express();
+const app = express()
 
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(cors({
+    origin: `http://localhost:4200`
+}));
 
-app.get("/", (req, res) => {
+app.get("/" , (req,res) => {
     res.status(200).json({
-        success: true,
-        message: "Welcome to server"
-    });
+        success : true ,
+        message : "Welcome to server"
+    })
 });
 
-app.use("/auth", authRouter); // تسجيل الدخول وإنشاء الحساب
-app.use("/products", productsRouter);
-app.use("/users", usersRouter);
-app.use("/orders", ordersRouter);
+app.use("/auth", authRouter);
+app.use("/products",productsRouter);
+app.use("/users",usersRouter);
+app.use("/orders",ordersRouter);
 app.use("/wishlist", wishlistRouter);
 app.use("/cart", cartRouter);
 
-app.use((req, res) => {
+app.use((req,res) => {
     res.status(404).json({
-        success: false,
-        message: "404 Page not Found"
-    });
+        success : false ,
+        message : '404 Page not Found'
+    })
 });
 
 app.use(globalError);
