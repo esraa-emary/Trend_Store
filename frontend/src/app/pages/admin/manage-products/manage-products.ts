@@ -1,28 +1,16 @@
-import { TitleCasePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ProductsService } from '../../../services/products-service/products-service';
+import { Router } from '@angular/router';
 
 @Component({
-  imports: [TitleCasePipe],
   selector: 'app-manage-products',
-  styleUrl: './manage-products.css',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './manage-products.html',
+  styleUrls: ['./manage-products.css']
 })
 export class ManageProducts {
-  columns: string[] = ['id', 'name', 'category', 'price', 'quantity', 'status'];
-
-  products: any = [{
-    id: 1,
-    name: "esraa",
-    category: "food",
-    price: 200,
-    quantity: 5,
-    status: "deleted"
-  }, {
-    id: 1,
-    name: "esraa",
-    category: "food",
-    price: 200,
-    quantity: 5,
-    status: "exist"
-  }]
+  productsService = inject(ProductsService);
+  router = inject(Router);
 }

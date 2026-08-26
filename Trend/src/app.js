@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
+const cors = require('cors');
 
 const productsRouter = require("./routes/product.route");
 const usersRouter = require("./routes/user.route");
@@ -13,6 +14,9 @@ const app = express()
 
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(cors({
+    origin: `http://localhost:4200`
+}))
 
 app.get("/" , (req,res) => {
     res.status(200).json({
@@ -22,9 +26,9 @@ app.get("/" , (req,res) => {
 })
 
 app.use("/auth", authRouter);
-app.use("/product",productsRouter);
-app.use("/user",usersRouter);
-app.use("/order",ordersRouter);
+app.use("/products",productsRouter);
+app.use("/users",usersRouter);
+app.use("/orders",ordersRouter);
 app.use("/wishlist", wishlistRouter);
 app.use("/cart", cartRouter);
 
