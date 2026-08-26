@@ -13,11 +13,14 @@
                 </tr>
             </thead>
             <tbody>
-                @for (product of products; track product.id) {
+                @for (product of productsService.products(); track product._id) {
                 <tr class="border-top border-dark">
-                    @for (key of columns; track key) {
-                    <td style="background-color: var(--first-color);" class="text-center">{{ product[key] }}</td>
-                    }
+                    <td style="background-color: var(--first-color);" class="text-center">{{ product._id }}</td>
+                    <td style="background-color: var(--first-color);" class="text-center">{{ product.name }}</td>
+                    <td style="background-color: var(--first-color);" class="text-center">{{ product.category }}</td>
+                    <td style="background-color: var(--first-color);" class="text-center">{{ product.price }}</td>
+                    <td style="background-color: var(--first-color);" class="text-center">{{ product.quantity }}</td>
+                    <td style="background-color: var(--first-color);" class="text-center">{{ product.status || 'LIVE' }}</td>
                 </tr>
                 }
             </tbody>

@@ -1,0 +1,71 @@
+import { CommonModule } from '@angular/common';
+import { Component, effect, inject, input, output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Product, ProductsService } from '../../../services/products-service/product-service';
+
+export type ProductDraft = Omit<Product, '_id'>;
+
+@Component({
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink],
+  selector: 'app-product-form',
+  styleUrl: './product-form.css',
+  templateUrl: './product-form.html',
+})
+export class ProductForm {
+  readonly product = input<Product | null>(null);
+  readonly btnText = input('Save Product');
+  readonly productSubmit = output<ProductDraft>();
+  readonly isPage = input(true);
+
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly productsService = inject(ProductsService);
+  isEditing = false;
+  productModel: ProductDraft = this.emptyProduct();
+
+  constructor() {
+    effect(() => {
+      const product = this.product();
+      if (product) {
+        this.productModel = { ...product };
+        this.isEditing = true;
+      }
+    });
+
+    effect(() => {
+      const id = this.route.snapshot.queryParamMap.get('id');
+      if (id) {
+        const product = this.productsService.products().find(item => item._id === id);
+        if (product) {
+          this.productModel = { ...product };
+          this.isEditing = true;
+        }
+      }
+    });
+  }
+
+  submit(): void {
+    const draft: ProductDraft = {
+      ...this.productModel,
+      price: Number(this.productModel.price),
+      stock: Number(this.productModel.stock ?? 0),
+    };
+    this.productSubmit.emit(draft);
+
+    if (this.isPage()) {
+      const id = this.product()?._id ?? this.route.snapshot.queryParamMap.get('id');
+      if (id) {
+        this.productsService.updateProduct(id, draft);
+      } else {
+        this.productsService.addProduct(draft);
+      }
+      void this.router.navigateByUrl('/admin/products');
+    }
+  }
+
+  private emptyProduct(): ProductDraft {
+    return { name: '', price: 0, category: '', quantity: 0, image: '', description: '', stock: 0, status: 'LIVE' };
+  }
+}

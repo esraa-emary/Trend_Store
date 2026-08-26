@@ -1,0 +1,6 @@
+.cart-container { max-width: 900px; }
+.serif-heading { font-family: serif; }
+.cart-product-image { width: 70px; height: 70px; object-fit: cover; }
+.small-price { font-size: 13px; }
+.spaced-button { letter-spacing: 1px; }
+.compact-spaced-button { font-size: 12px; letter-spacing: 1px; }

@@ -1,0 +1,9 @@
+<div class="modal-backdrop" (click)="closed.emit()">
+  <section class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="add-title" (click)="$event.stopPropagation()">
+    <div class="modal-heading">
+      <h2 id="add-title">Add Product</h2>
+      <button type="button" class="btn-close" aria-label="Close" (click)="closed.emit()"></button>
+    </div>
+    <app-product-form [isPage]="false" [btnText]="'Add Product'" (productSubmit)="add($event)"></app-product-form>
+  </section>
+</div>

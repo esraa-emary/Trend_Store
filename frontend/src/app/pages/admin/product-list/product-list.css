@@ -1,0 +1,4 @@
+.product-list-container { max-width: 1000px; }
+.serif-heading { font-family: serif; }
+.compact-spaced-button { font-size: 12px; letter-spacing: 1px; }
+.list-product-image { width: 50px; height: 50px; object-fit: cover; }

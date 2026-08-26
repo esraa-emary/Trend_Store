@@ -1,0 +1,52 @@
+<div class="container py-5 product-form-container">
+  @if (isPage()) {
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+      <div>
+        <span class="text-uppercase text-secondary back-office-label">Back Office</span>
+        <h2 class="fw-normal m-0 serif-heading">{{ isEditing ? 'Edit Product' : 'Add New Product' }}</h2>
+      </div>
+      <a routerLink="/admin/products" class="text-dark text-decoration-none back-link">Back to products</a>
+    </div>
+  }
+
+  <div class="bg-white p-4 border product-form-box">
+    <form (ngSubmit)="submit()">
+      <div class="mb-3">
+        <label for="name" class="form-label text-uppercase text-secondary form-label-compact">Product Name</label>
+        <input id="name" name="name" type="text" class="form-control rounded-0 border-dark bg-transparent py-2 form-control-compact" placeholder="e.g. Silk Slip Dress" [(ngModel)]="productModel.name" required>
+      </div>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label for="category" class="form-label text-uppercase text-secondary form-label-compact">Category</label>
+          <input id="category" name="category" type="text" class="form-control rounded-0 border-dark bg-transparent py-2 form-control-compact" placeholder="e.g. Dresses" [(ngModel)]="productModel.category" required>
+        </div>
+        <div class="col-md-6">
+          <label for="price" class="form-label text-uppercase text-secondary form-label-compact">Price ($)</label>
+          <input id="price" name="price" type="number" min="0" class="form-control rounded-0 border-dark bg-transparent py-2 form-control-compact" [(ngModel)]="productModel.price" required>
+        </div>
+      </div>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label for="stock" class="form-label text-uppercase text-secondary form-label-compact">Stock Quantity</label>
+          <input id="stock" name="stock" type="number" min="0" class="form-control rounded-0 border-dark bg-transparent py-2 form-control-compact" [(ngModel)]="productModel.stock">
+        </div>
+        <div class="col-md-6">
+          <label for="status" class="form-label text-uppercase text-secondary form-label-compact">Status</label>
+          <select id="status" name="status" class="form-select rounded-0 border-dark bg-transparent py-2 form-control-compact" [(ngModel)]="productModel.status">
+            <option value="LIVE">LIVE</option>
+            <option value="DRAFT">DRAFT</option>
+          </select>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label text-uppercase text-secondary form-label-compact">Product Image URL</label>
+        <input id="image" name="image" type="url" class="form-control rounded-0 border-dark bg-transparent py-2 form-control-compact" placeholder="https://..." [(ngModel)]="productModel.image" required>
+      </div>
+      <div class="mb-4">
+        <label for="description" class="form-label text-uppercase text-secondary form-label-compact">Description</label>
+        <textarea id="description" name="description" class="form-control rounded-0 border-dark bg-transparent py-2 form-control-compact" rows="4" [(ngModel)]="productModel.description"></textarea>
+      </div>
+      <button type="submit" class="btn btn-atelier w-100 py-3 text-uppercase spaced-button">{{ btnText() }}</button>
+    </form>
+  </div>
+</div>

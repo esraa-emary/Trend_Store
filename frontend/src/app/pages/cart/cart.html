@@ -1,0 +1,47 @@
+<div class="container py-5 cart-container">
+  <h2 class="fw-normal mb-4 serif-heading">Shopping Cart</h2>
+
+  @if (cartService.cartItems().length > 0) {
+    <div class="row g-4">
+      <div class="col-lg-8">
+        @for (item of cartService.cartItems(); track item.product._id) {
+          <div class="d-flex align-items-center justify-content-between p-3 mb-3 border bg-white">
+            <div class="d-flex align-items-center gap-3">
+              <img [src]="item.product.image" alt="" class="cart-product-image">
+              <div>
+                <h6 class="mb-1">{{ item.product.name }}</h6>
+                <p class="text-secondary mb-0 small-price">Price: ${{ item.product.price }}</p>
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <button class="btn btn-sm btn-outline-dark" (click)="decrease(item.product._id)" aria-label="Decrease quantity">-</button>
+              <span class="fw-bold quantity-label">{{ item.quantity }}</span>
+              <button class="btn btn-sm btn-outline-dark" (click)="increase(item.product._id)" aria-label="Increase quantity">+</button>
+              <button class="btn btn-sm btn-outline-danger" (click)="removeItem(item.product._id)">Remove</button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="col-lg-4">
+        <div class="p-4 border bg-white">
+          <h5 class="mb-3 pb-2 border-bottom">Order Summary</h5>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Total Items:</span>
+            <span>{{ cartService.totalItems() }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-4">
+            <span class="fw-bold">Total Price:</span>
+            <span class="fw-bold">${{ cartService.totalPrice() }}</span>
+          </div>
+          <a routerLink="/checkout" class="btn btn-dark w-100 py-2 text-uppercase spaced-button">Proceed to Checkout</a>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="text-center py-5 bg-white border">
+      <p class="text-secondary mb-3">Your cart is currently empty.</p>
+      <a routerLink="/" class="btn btn-outline-dark text-uppercase compact-spaced-button">Back to Shop</a>
+    </div>
+  }
+</div>

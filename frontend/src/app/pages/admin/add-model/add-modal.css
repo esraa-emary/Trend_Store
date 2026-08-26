@@ -1,0 +1,5 @@
+.modal-backdrop { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 1rem; background: rgb(26 26 26 / 55%); }
+.modal-panel { width: min(100%, 720px); max-height: 95vh; overflow: auto; background: var(--bg-cream); }
+.modal-heading { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid #e5e0d8; }
+.modal-heading h2 { margin: 0; font-family: serif; font-weight: 400; }
+.modal-panel app-product-form { display: block; }

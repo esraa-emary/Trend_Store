@@ -1,5 +1,6 @@
 import { TitleCasePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ProductsService } from '../../../services/products-service/product-service';
 
 @Component({
   imports: [TitleCasePipe],
@@ -8,21 +9,6 @@ import { Component } from '@angular/core';
   templateUrl: './manage-products.html',
 })
 export class ManageProducts {
+  readonly productsService = inject(ProductsService);
   columns: string[] = ['id', 'name', 'category', 'price', 'quantity', 'status'];
-
-  products: any = [{
-    id: 1,
-    name: "esraa",
-    category: "food",
-    price: 200,
-    quantity: 5,
-    status: "deleted"
-  }, {
-    id: 1,
-    name: "esraa",
-    category: "food",
-    price: 200,
-    quantity: 5,
-    status: "exist"
-  }]
 }

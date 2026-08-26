@@ -1,0 +1,49 @@
+@if (showAddModal()) {
+  <app-add-modal (closed)="closeModals()"></app-add-modal>
+}
+@if (editingProduct(); as product) {
+  <app-edit-modal [product]="product" (closed)="closeModals()"></app-edit-modal>
+}
+
+<div class="container py-5 product-list-container">
+  <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+    <h2 class="fw-normal m-0 serif-heading">Admin Dashboard - Products</h2>
+    <!-- زرار الإضافة من بره -->
+    <button class="btn btn-dark py-2 px-3 text-uppercase compact-spaced-button" (click)="openAddModal()">
+      + Add Product
+    </button>
+  </div>
+
+  <!-- جدول عرض المنتجات -->
+  <div class="table-responsive bg-white border p-3">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (product of productsService.products(); track product._id) {
+          <tr>
+            <td>
+              <img [src]="product.image" alt="" class="list-product-image">
+            </td>
+            <td class="fw-bold"><a class="product-link" [routerLink]="['/products', product._id]">{{ product.name }}</a></td>
+            <td class="text-secondary">{{ product.category }}</td>
+            <td>${{ product.price }}</td>
+            <td>
+              <!-- زرار التعديل من بره -->
+              <button class="btn btn-sm btn-outline-dark me-2" (click)="openEditModal(product)">Edit</button>
+              <!-- زرار الحذف -->
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteProduct(product._id)">Delete</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
