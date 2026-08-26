@@ -1,0 +1,12 @@
+.dashboard {
+  min-height: 100vh;
+  padding: 60px;
+  background: #f8f5ec;
+  color: #17130f;
+}
+
+.dashboard h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  margin-bottom: 15px;
+}

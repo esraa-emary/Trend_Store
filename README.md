@@ -1,52 +1,59 @@
-# Trend
+# TrendStoreFrontend
 
-## 📌 Overview
-**Trend** is a fully functional e-commerce web application built with the MEAN stack (MongoDB, Express.js, Angular, Node.js). The platform provides a seamless online shopping experience with user authentication, product management, and order processing.
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.5.
 
----
+## Development server
 
-## ✨ Features
+To start a local development server, run:
 
-### 👤 Users
-- User registration and login
-- Role-based access control (Admin / Customer)
-- Profile details and order history
+```bash
+ng serve
+```
 
-### 📦 Products
-- Browse products with **category filtering**
-- Product details page with descriptions, pricing, and images
-- Admin panel for **CRUD operations** (Create, Read, Update, Delete)
-- Stock quantity management
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-### 🛒 Orders
-- Add/remove orders
-- Order status (Accepted, Rejected)
-- Admin dashboard to manage (Orders, Users, Products)
+## Code scaffolding
 
-### 🎨 UI/UX
-- Fully **responsive** design (Mobile, Tablet, Desktop)
-- Clean and intuitive interface using **Angular Material**
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
----
+```bash
+ng generate component component-name
+```
 
-## 🛠️ Tech Stack
-- Frontend: Angular
-- Backend: Node.js, Express.js
-- Database: MongoDB
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
----
+```bash
+ng generate --help
+```
 
-## ✍️ Authors
-- **Esraa Emary Abd El-Salam**: [GitHub](https://github.com/esraa-emary) - [LinkedIn](https://www.linkedin.com/in/esraa-emary-b372b8303/)
-- **Yahia Ahmed**: [GitHub](https://github.com/Yahia-elk2005) - [LinkedIn]()
-- **Mohamed Abo El Ala**: [GitHub](https://github.com/muhamed404) - [LinkedIn]()
-- **Nagham Yosry**: [GitHub]() - [LinkedIn]()
-- **Samah Mohammed**: [GitHub](https://github.com/SamahCodes) - [LinkedIn]()
-- **Ammar Abd El-Galel**: [GitHub](https://github.com/Ammar-Qamar) - [LinkedIn]()
+## Building
 
----
+To build the project run:
 
-## 📜 License
-This project is licensed under the Mozilla Public License 2.0. See the [LICENSE](https://github.com/esraa-emary/Trend_Website/blob/main/LICENSE) file for more details.
+```bash
+ng build
+```
 
-## Have fun exploring the Vole Machine Language Simulator GUI! Let us know your thoughts and feedback!! 🎉🤖
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Running unit tests
+
+To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
