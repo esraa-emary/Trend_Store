@@ -117,8 +117,7 @@ exports.login = catchAsync(async (req, res, next) => {
   // So we explicitly select it here
   const user = await User
     .findOne({ email })
-    .select("+password");
-
+    .select("+password +role");
 
   // User doesn't exist
   if (!user) {
