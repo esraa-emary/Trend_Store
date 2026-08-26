@@ -1,9 +1,9 @@
 const Order = require("../models/order.model.js");
 const Product = require("../models/product.model.js");
+const Cart = require("../models/cart.model.js");
 const AppError = require("../utils/AppError.js");
 const catchAsync = require("../utils/catchAsync.js");
 
-// getall --yahia
 exports.getAllOrders = catchAsync(async (req, res, next) => {
     const orders = await Order.find()
         .populate("user", "name email")
@@ -14,84 +14,102 @@ exports.getAllOrders = catchAsync(async (req, res, next) => {
         message: "Orders fetched successfully",
         totalOrders: orders.length,
         data: orders
-    })
-})
+    });
+});
 
-// getone --yahia
 exports.getOneOrder = catchAsync(async (req, res, next) => {
     const order = await Order.findById(req.params.id)
         .populate("user", "name email")
         .populate("products.product", "name price image");
 
-    if (!order) return next(new AppError(404, `No order found with this id ${req.params.id}`))
+    if (!order) {
+        return next(new AppError(404, `No order found with this id ${req.params.id}`));
+    }
+
+    if (order.user._id.toString() !== req.user._id.toString() && req.user.role !== "admin") {
+        return next(new AppError(403, "You are not authorized to view this order"));
+    }
 
     res.status(200).json({
         success: true,
         message: "Order fetched successfully",
         data: order
-    })
-})
+    });
+});
 
-// add --esraa
-exports.addOrder = catchAsync(async (req, res, next) => {
-    const {
-        user,
-        products
-    } = req.body;
+exports.createOrderFromCart = catchAsync(async (req, res, next) => {
+    const userId = req.user._id;
 
-    if (!user || !products || !Array.isArray(products) || products.length === 0) {
-        return next(new AppError(400, "Please provide user id and products array with items."));
+    const cart = await Cart.findOne({ user: userId }).populate("cartItems.product");
+
+    if (!cart || cart.cartItems.length === 0) {
+        return next(new AppError(400, "Your cart is empty"));
     }
 
-    const productIds = products.map(item => item.product);
-    const dbProducts = await Product.find({ _id: { $in: productIds } });
-
-    if (dbProducts.length !== productIds.length) {
-        return next(new AppError(400, "One or more products not found."));
+    for (const item of cart.cartItems) {
+        if (item.product.quantity < item.quantity) {
+            return next(new AppError(400, `Not enough stock for product: ${item.product.name}`));
+        }
     }
-
-    const total = products.reduce((total, item) => {
-        const dbProduct = dbProducts.find(p => p._id.toString() === item.product.toString());
-        return total + (dbProduct.price * item.quantity);
-    }, 0);
 
     const order = await Order.create({
-        user: req.user._id,
-        products: products,
-        totalPrice: total
+        user: userId,
+        products: cart.cartItems.map(item => ({
+            product: item.product._id,
+            quantity: item.quantity,
+            price: item.price
+        })),
+        totalPrice: cart.totalCartPrice
     });
+
+    for (const item of cart.cartItems) {
+        await Product.findByIdAndUpdate(item.product._id, {
+            $inc: { quantity: -item.quantity }
+        });
+    }
+
+    await Cart.deleteOne({ user: userId });
 
     res.status(201).json({
         success: true,
-        message: "Order added successfully",
+        message: "Order created successfully from cart",
         data: order
-    })
-})
+    });
+});
 
-// ship --esraa
 exports.shipOrder = catchAsync(async (req, res, next) => {
     const order = await Order.findById(req.params.id);
-    if (!order) return next(new AppError(404, `No order found with this id ${req.params.id}`));
 
-    order.isShipped = true;
-    await order.save();
+    if (!order) {
+        return next(new AppError(404, `No order found with this id ${req.params.id}`));
+    }
+
+    if (order.isShipped) {
+        return next(new AppError(400, "Order is already shipped"));
+    }
+
+    // استخدام findByIdAndUpdate لتفادي مشاكل الـ Validation القديمة عند الـ save
+    const updatedOrder = await Order.findByIdAndUpdate(
+        req.params.id,
+        { isShipped: true },
+        { new: true, runValidators: true }
+    );
 
     res.status(200).json({
         success: true,
-        message: "Order accepted successfully",
-        data: order
-    })
-})
+        message: "Order shipped successfully",
+        data: updatedOrder
+    });
+});
 
-// getuserorders --yahia
 exports.getUserOrders = catchAsync(async (req, res, next) => {
     const orders = await Order.find({ user: req.user._id })
         .populate("products.product", "name price image");
 
     res.status(200).json({
         success: true,
-        message: "Order fetched successfully",
+        message: "User orders fetched successfully",
         totalOrders: orders.length,
         data: orders
-    })
-})
+    });
+});

@@ -75,15 +75,21 @@ exports.signup = catchAsync(async (req, res, next) => {
     );
   }
 
+  const otp = Math.floor(100000 + Math.random() * 900000).toString(); // يحي
+  const hashedOTP = await bcrypt.hash(otp, 12); // يحي
 
   // Create user
   const newUser = await User.create({
     name,
     email,
     password,
-    phoneNumber
+    phoneNumber,
+    confirmOTP: hashedOTP, // يحي
+    OTPExpire: Date.now() + 10 * 60 * 1000, // يحي
+    isActive: false // يحي
   });
 
+  await sendEmail(email, "Activate Your Account", template(otp, name, "Account Activation")); // يحي
 
   // Send token
   createSendToken(
@@ -211,9 +217,9 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   const { password } = req.body
   const findUser = await User.findOne({ resetToken: token })
   if (!findUser) return next(new AppError(400, 'The reset token is invalid or expired'))
-  if (password.length < 6) return next(new appError(400, 'Password must 6 char or more'))
-  const hashedPassword = await bcrypt.hash(password, +process.env.SALT_ROUND)
-  findUser.password = hashedPassword
+  if (password.length < 6) return next(new AppError(400, 'Password must 6 char or more'))
+  
+  findUser.password = password // يحي
   findUser.resetToken = undefined
   await findUser.save()
   res.status(200).json({

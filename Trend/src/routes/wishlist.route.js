@@ -1,9 +1,11 @@
 const router = require("express").Router();
-const auth = require("../middlewares/auth");
-
-const { toggleWishlist } = require("../controllers/wishlist.controller.js");
+const auth = require("../middlewares/auth.js");
+const { toggleWishlist, getWishlist } = require("../controllers/wishlist.controller.js");
 
 router.use(auth);
-router.post("/", toggleWishlist);
+
+router.route("/")
+    .get(getWishlist)       // لعرض المفضلة
+    .post(toggleWishlist);  // للـ Toggle (إضافة/إزالة في نفس الوقت)
 
 module.exports = router;

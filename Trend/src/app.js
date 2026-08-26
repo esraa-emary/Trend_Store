@@ -16,14 +16,14 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors({
     origin: `http://localhost:4200`
-}))
+}));
 
 app.get("/" , (req,res) => {
     res.status(200).json({
         success : true ,
         message : "Welcome to server"
     })
-})
+});
 
 app.use("/auth", authRouter);
 app.use("/products",productsRouter);
@@ -37,8 +37,8 @@ app.use((req,res) => {
         success : false ,
         message : '404 Page not Found'
     })
-})
+});
 
-app.use(globalError)
+app.use(globalError);
 
 module.exports = app;

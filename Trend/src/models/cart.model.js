@@ -3,21 +3,21 @@ const mongoose = require("mongoose");
 const cartSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
+        ref: "User", // يفضل أيضاً جعله كابيتال ليتطابق مع موديل المستخدم
         required: [true, "User is required"],
-        unique: true // كل يوزر ليه سلة واحدة نشطة
+        unique: true
     },
     cartItems: [{
         product: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "products",
+            ref: "Product", // تم التعديل هنا ليطابق اسم الموديل الصحيح
             required: true
         },
         quantity: {
             type: Number,
             default: 1
         },
-        price: { // بنسجل السعر وقت الإضافة للسلة عشان لو سعر المنتج اتغير بعدين
+        price: {
             type: Number,
             required: true
         }
@@ -31,5 +31,5 @@ const cartSchema = mongoose.Schema({
     versionKey: false
 });
 
-const Cart = mongoose.model("cart", cartSchema);
+const Cart = mongoose.model("Cart", cartSchema);
 module.exports = Cart;

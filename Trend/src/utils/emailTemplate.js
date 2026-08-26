@@ -45,9 +45,6 @@ const template = (code, name, subject) => `<!DOCTYPE html>
       font-size: 16px;
       margin: 20px 0;
     }
-    .activation-button:hover {
-      background-color: #0056b3;
-    }
     .email-footer {
       text-align: center;
       padding: 15px;
@@ -73,12 +70,15 @@ const template = (code, name, subject) => `<!DOCTYPE html>
       <p>If you did not sign up for this account, please ignore this email.</p>
       <p>Best regards,<br>E-commerce store Team</p>
     </div>
-    <div class="email-footer">
-      <p>&copy; 2025 E-commerce store. All rights reserved.</p>
-      <p><a href="[SupportLink]">Contact Support</a> | <a href="[UnsubscribeLink]">Unsubscribe</a></p>
-    </div>
+    .email-footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #f4f4f4;
+      font-size: 14px;
+      color: #777777;
+    }
   </div>
 </body>
 </html>`;
 
-module.exports = template
+module.exports = template;
