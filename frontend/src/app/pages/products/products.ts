@@ -1,0 +1,57 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IProduct } from '../../models/iproduct';
+import { products } from '../../data/index';
+
+@Component({
+  selector: 'app-products',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './products.html',
+  styleUrls: ['./products.css']
+})
+export class ProductsComponent {
+  allProducts: IProduct[] = products;
+  
+  selectedCategory: string = 'All';
+  searchTerm: string = '';
+
+  currentPage: number = 1;
+  pageSize: number = 4;
+
+  get filteredProducts(): IProduct[] {
+    return this.allProducts.filter(product => {
+      const matchesCategory = this.selectedCategory === 'All' || 
+        product.category.toLowerCase() === this.selectedCategory.toLowerCase();
+      
+      const matchesSearch = product.title.toLowerCase().includes(this.searchTerm.toLowerCase());
+
+      return matchesCategory && matchesSearch;
+    });
+  }
+
+  get paginatedProducts(): IProduct[] {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.filteredProducts.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredProducts.length / this.pageSize);
+  }
+
+  filterByCategory(category: string) {
+    this.selectedCategory = category;
+    this.currentPage = 1;
+  }
+
+  onSearchChange() {
+    this.currentPage = 1;
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+}

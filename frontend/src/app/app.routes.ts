@@ -5,18 +5,21 @@ import { ManageUsers } from './pages/admin/manage-users/manage-users';
 import { Dashboard } from './pages/admin/dashboard/dashboard';
 import { Error } from './pages/global/error/error';
 import { AdminLayout } from './layouts/admin-layout/admin-layout';
+import { ProductsComponent } from './pages/products/products';
 
 export const routes: Routes = [
-    {
-        path: "admin",
-        component: AdminLayout,
-        children: [
-            { path: "", redirectTo: "dashboard", pathMatch: "full" },
-            { path: "dashboard", component: Dashboard },
-            { path: "orders", component: ManageOrders },
-            { path: "products", component: ManageProducts },
-            { path: "users", component: ManageUsers },
-        ]
-    },
-    { path: "**", component: Error }
+  { path: '', redirectTo: 'products', pathMatch: 'full' },
+  { path: 'products', component: ProductsComponent },
+  {
+    path: 'admin',
+    component: AdminLayout,
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: Dashboard },
+      { path: 'orders', component: ManageOrders },
+      { path: 'products', component: ManageProducts },
+      { path: 'users', component: ManageUsers },
+    ],
+  },
+  { path: '**', component: Error }
 ];
