@@ -13,7 +13,6 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
     });
 
 });
-
 // getone --samah
 exports.getOneProduct = catchAsync(async (req, res, next) => {
     const product = await Product.findById(req.params.id);
@@ -44,7 +43,8 @@ exports.addProduct = catchAsync(async (req, res, next) => {
         return next(new AppError(400, "Please provide name, price, category, quantity, image, and description"));
     }
 
-    const newProduct = await Product.create(req.body).select("+isDeleted +deletedAt");
+    const newProduct = await Product.create(req.body)
+    newProduct.isDeleted = undefined
     res.status(201).json({
         status: "success",
         message: "product added successfully",
@@ -67,12 +67,12 @@ exports.updateProduct = catchAsync(async (req, res, next) => {
     });
 })
 
-// hide --samah
+// hide --samah909999999999999999999999
 exports.hideProduct = catchAsync(async (req, res, next) => {
     const product = await Product.findByIdAndUpdate(
         req.params.id,
         {
-            isDeleted: true,
+       isDeleted: true,
             deletedAt: new Date()
         },
         {
