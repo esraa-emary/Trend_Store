@@ -13,4 +13,19 @@ import { Router } from '@angular/router';
 export class ManageOrders {
   ordersService = inject(OrdersService);
   router = inject(Router);
+
+  shipOrder(orderId: string) {
+    if (confirm('Are you sure you want to ship this order?')) {
+      this.ordersService.shipOrder(orderId).subscribe({
+        next: (response) => {
+          console.log('Order shipped:', response);
+          this.ordersService.orders.reload();
+        },
+        error: (err) => {
+          console.error('Error shipping order:', err);
+          alert('Failed to ship order. Please try again.');
+        }
+      });
+    }
+  }
 }

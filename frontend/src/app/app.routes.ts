@@ -1,92 +1,52 @@
 import { Routes } from '@angular/router';
-
-import { UserLayoutComponent } from './layouts/user-layout/user-layout';
-import { HomeComponent } from './pages/user/user-home';
-
-import { ProductDetails } from './pages/product-detail/product-detail';
-import { CartComponent } from './pages/cart/cart';
-import { CheckoutComponent } from './pages/checkout/checkout';
-
-import { AdminLayout } from './layouts/admin-layout/admin-layout';
-import { Dashboard } from './pages/admin/dashboard/dashboard';
 import { ManageOrders } from './pages/admin/manage-orders/manage-orders';
 import { ManageProducts } from './pages/admin/manage-products/manage-products';
 import { ManageUsers } from './pages/admin/manage-users/manage-users';
-import { ProductForm } from './pages/admin/product-form/product-form';
-
+import { Dashboard } from './pages/admin/dashboard/dashboard';
 import { Error } from './pages/global/error/error';
+import { AdminLayout } from './layouts/admin-layout/admin-layout';
+import { ProductDetails } from './pages/user/product-detail/product-detail';
+import { CartComponent } from './pages/cart/cart';
+import { CheckoutComponent } from './pages/checkout/checkout';
+import { ProductForm } from './pages/admin/product-form/product-form';
+import { UserLayoutComponent } from './layouts/user-layout/user-layout';
+import { HomeComponent } from './pages/user/user-home/user-home';
+import { ProductsComponent } from './pages/user/products/products';
+import { Profile } from './pages/user/profile/profile';
+import { authGuard } from './guards/auth/auth-guard';
+import { Login } from './pages/user/login/login';
+import { Signup } from './pages/user/signup/signup';
+import { UserOrders } from './pages/user/user-orders/user-orders';
+import { ConfirmEmail } from './pages/user/confirm-email/confirm-email';
 
 export const routes: Routes = [
-  // User
-  {
-    path: '',
-    component: UserLayoutComponent,
-    children: [
-      {
-        path: '',
-        component: HomeComponent,
-      },
-    ],
-  },
-
-  // Products
-  {
-    path: 'products/:id',
-    component: ProductDetails,
-  },
-
-  // Cart
-  {
-    path: 'cart',
-    component: CartComponent,
-  },
-
-  // Checkout
-  {
-    path: 'checkout',
-    component: CheckoutComponent,
-  },
-
-  // Admin
-  {
-    path: 'admin',
-    component: AdminLayout,
-    children: [
-      {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full',
-      },
-      {
-        path: 'dashboard',
-        component: Dashboard,
-      },
-      {
-        path: 'orders',
-        component: ManageOrders,
-      },
-      {
-        path: 'products',
-        component: ManageProducts,
-      },
-      {
-        path: 'users',
-        component: ManageUsers,
-      },
-      {
-        path: 'product-form',
-        component: ProductForm,
-      },
-      {
-        path: 'products/:id',
-        component: ProductDetails,
-      },
-    ],
-  },
-
-  // Error
-  {
-    path: '**',
-    component: Error,
-  },
+    {
+        path: '', component: UserLayoutComponent, children: [
+            { path: '', redirectTo: "home", pathMatch: "full" },
+            { path: 'home', component: HomeComponent },
+            { path: 'products', component: ProductsComponent },
+            { path: 'profile', component: Profile, canActivate: [authGuard] },
+            { path: "my-orders", component: UserOrders, canActivate: [authGuard] },
+            { path: "login", component: Login },
+            { path: "signup", component: Signup },
+            { path: 'products/:id', component: ProductDetails },
+            { path: 'cart', component: CartComponent },
+            { path: 'checkout', component: CheckoutComponent },
+            { path: "confirm-email", component: ConfirmEmail }
+        ]
+    },
+    {
+        path: "admin",
+        component: AdminLayout, children: [
+            { path: "", redirectTo: "dashboard", pathMatch: "full" },
+            { path: "dashboard", component: Dashboard },
+            { path: "orders", component: ManageOrders },
+            { path: "products", component: ManageProducts },
+            { path: "users", component: ManageUsers },
+            { path: 'products/:id', component: ProductDetails },
+            { path: 'products', component: ManageProducts },
+            { path: 'product-form', component: ProductForm },
+        ]
+    },
+    { path: "**", component: Error }
 ];

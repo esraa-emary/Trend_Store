@@ -14,8 +14,8 @@ exports.getAllOrders = catchAsync(async (req, res, next) => {
         message: "Orders fetched successfully",
         totalOrders: orders.length,
         data: orders
-    })
-})
+    });
+});
 
 // getone --yahia
 exports.getOneOrder = catchAsync(async (req, res, next) => {
@@ -34,10 +34,7 @@ exports.getOneOrder = catchAsync(async (req, res, next) => {
 
 // add --esraa
 exports.addOrder = catchAsync(async (req, res, next) => {
-    const {
-        user,
-        products
-    } = req.body;
+    const { user, products } = req.body;
 
     if (!user || !products || !Array.isArray(products) || products.length === 0) {
         return next(new AppError(400, "Please provide user id and products array with items."));
@@ -47,26 +44,42 @@ exports.addOrder = catchAsync(async (req, res, next) => {
     const dbProducts = await Product.find({ _id: { $in: productIds } });
 
     if (dbProducts.length !== productIds.length) {
-        return next(new AppError(400, "One or more products not found."));
+        return next(new AppError(400, `One or more products not found. Requested: ${productIds.length}, Found: ${dbProducts.length}`));
+    }
+
+    for (const item of products) {
+        const dbProduct = dbProducts.find(p => p._id.toString() === item.product.toString());
+        console.log('Checking product:', dbProduct?.name, 'Stock:', dbProduct?.quantity, 'Requested:', item.quantity);
+
+        if (!dbProduct) {
+            return next(new AppError(400, `Product not found: ${item.product}`));
+        }
+
+        if (dbProduct.quantity < item.quantity) {
+            return next(new AppError(400, `Insufficient stock for product "${dbProduct.name}". Available: ${dbProduct.quantity}, Requested: ${item.quantity}`));
+        }
     }
 
     const total = products.reduce((total, item) => {
         const dbProduct = dbProducts.find(p => p._id.toString() === item.product.toString());
         return total + (dbProduct.price * item.quantity);
     }, 0);
+    console.log('Total:', total);
 
     const order = await Order.create({
-        user: req.user._id,
+        user: user,
         products: products,
         totalPrice: total
     });
+
+    console.log('Order created:', order);
 
     res.status(201).json({
         success: true,
         message: "Order added successfully",
         data: order
-    })
-})
+    });
+});
 
 // ship --esraa
 exports.shipOrder = catchAsync(async (req, res, next) => {
@@ -76,10 +89,14 @@ exports.shipOrder = catchAsync(async (req, res, next) => {
     order.isShipped = true;
     await order.save();
 
+    const populatedOrder = await Order.findById(order._id)
+        .populate("user", "name email")
+        .populate("products.product", "name price image");
+
     res.status(200).json({
         success: true,
         message: "Order accepted successfully",
-        data: order
+        data: populatedOrder
     })
 })
 

@@ -14,7 +14,16 @@ export class AddModal {
   private readonly productsService = inject(ProductsService);
 
   add(product: ProductDraft): void {
-    this.productsService.addProduct(product);
-    this.closed.emit();
+    this.productsService.addProduct(product).subscribe({
+      next: (response) => {
+        console.log('Product added:', response);
+        this.productsService.loadProducts();
+        this.closed.emit();
+      },
+      error: (err) => {
+        console.error('Error adding product:', err);
+        alert('Failed to add product. Please try again.');
+      }
+    });
   }
 }

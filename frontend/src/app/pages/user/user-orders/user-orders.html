@@ -1,0 +1,68 @@
+<div class="container py-5 mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-dark">
+    <h2 class="serif-font m-0">My Orders</h2>
+    <a routerLink="/profile" class="text-dark text-decoration-none">Back to Profile</a>
+  </div>
+
+  @if (isLoading()) {
+  <div class="text-center py-5">
+    <div class="spinner-border text-dark" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  } @else if (errorMessage()) {
+  <div class="alert alert-danger rounded-0">{{ errorMessage() }}</div>
+  } @else {
+  @if (myOrders().length > 0) {
+  <div class="row g-4">
+    @for (order of myOrders(); track order._id) {
+    <div class="col-12">
+      <div class="card rounded-0 border-dark p-4 bg-transparent">
+        <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+          <h5 class="serif-font mb-0">Order ID: #{{ order._id }}</h5>
+          <span class="badge" [ngClass]="order.isShipped ? 'bg-success' : 'bg-warning text-dark'">
+            {{ order.isShipped ? 'Shipped' : 'Pending' }}
+          </span>
+        </div>
+        <p class="text-muted mb-3">Placed on: {{ order.createdAt | date:'medium' }}</p>
+
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of order.products; track item.product?._id) {
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center gap-3">
+                    <img [src]="item.product?.image" alt="" style="width: 50px; height: 50px; object-fit: cover;">
+                    <span>{{ item.product?.name }}</span>
+                  </div>
+                </td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.price }}</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+          <h5 class="fw-bold mb-0">Total: ${{ order.totalPrice }}</h5>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+  } @else {
+  <div class="text-center py-5 border border-dark bg-white">
+    <p class="text-muted mb-3">You haven't placed any orders yet.</p>
+    <a routerLink="/products" class="btn btn-dark rounded-0 text-uppercase px-4 py-2">Start Shopping</a>
+  </div>
+  }
+  }
+</div>

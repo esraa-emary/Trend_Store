@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ProductService, Product } from '../../services/product.service';
+import { IProduct } from '../../models/iproduct';
+import { ProductsService } from '../../services/products-service/products-service';
 
 @Component({
   selector: 'app-product',
@@ -15,21 +16,14 @@ import { ProductService, Product } from '../../services/product.service';
 })
 export class ProductComponent implements OnInit {
 
-  @Input() products: Product[] = [];
+  @Input() products: IProduct[] = [];
 
   constructor(
-    private productService: ProductService
+    private productService: ProductsService
   ) {}
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe({
-      next: (products) => {
-        this.products = products;
-      },
-      error: (error) => {
-        console.error('Failed to load products:', error);
-      }
-    });
+    // Products are provided through @Input()
   }
 
 }

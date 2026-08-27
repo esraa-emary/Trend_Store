@@ -1,16 +1,34 @@
 const jwt = require("jsonwebtoken");
 const AppError = require("../utils/AppError");
-const User = require("../models/user.model")
-const auth = async (req,res,next) => {
-    if (req.headers.authorization) {
-        const token = req.headers.authorization.split(" ")[1]    // 'Bearer token'
-        const decode = jwt.verify(token,process.env.SECRET_KEY)
-        const user = await User.findOne({isDeleted:false, _id:decode.id}).select("+role")
-        req.user = user
-        next()
-    } else {
-        return next(new AppError(400, 'please login first'))
-    }
-}
+const User = require("../models/user.model");
 
-module.exports = auth
+const auth = async (req, res, next) => {
+    try {
+        if (!req.headers.authorization || !req.headers.authorization.startsWith("Bearer")) {
+            return next(new AppError(401, 'Please login first'));
+        }
+
+        const token = req.headers.authorization.split(" ")[1];
+
+        const decode = jwt.verify(token, process.env.SECRET_KEY);
+
+        const user = await User.findOne({ _id: decode.id, isActive: true }).select("+role");
+        if (!user) {
+            return next(new AppError(401, 'The user belonging to this token no longer exists or is deactivated.'));
+        }
+
+        req.user = user;
+        next();
+
+    } catch (error) {
+        if (error.name === 'JsonWebTokenError') {
+            return next(new AppError(401, 'Invalid token. Please log in again.'));
+        }
+        if (error.name === 'TokenExpiredError') {
+            return next(new AppError(401, 'Your token has expired. Please log in again.'));
+        }
+        return next(error);
+    }
+};
+
+module.exports = auth;

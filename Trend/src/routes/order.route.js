@@ -3,27 +3,16 @@ const auth = require("../middlewares/auth.js");
 const restrictTo = require("../middlewares/restrictTo.js");
 const router = require("express").Router()
 
-// router.use(auth);
-
-// router.get("/my-orders", getUserOrders);
-
-// router.route("/")
-//     .get(restrictTo("admin"), getAllOrders)
-//     .post(addOrder);
-
-// router.route("/:id")
-//     .get(getOneOrder)
-//     .patch(restrictTo("admin"), shipOrder);
-
+router.use(auth);
 
 router.get("/my-orders", getUserOrders);
 
 router.route("/")
-    .get(getAllOrders)
+    .get(restrictTo("admin"), getAllOrders)
     .post(addOrder);
 
 router.route("/:id")
     .get(getOneOrder)
-    .patch(shipOrder);
+    .patch(restrictTo("admin"), shipOrder);
 
 module.exports = router

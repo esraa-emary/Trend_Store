@@ -57,11 +57,30 @@ export class ProductForm {
     if (this.isPage()) {
       const id = this.product()?._id ?? this.route.snapshot.queryParamMap.get('id');
       if (id) {
-        this.productsService.updateProduct(id, draft);
+        this.productsService.updateProduct(id, draft).subscribe({
+          next: (response) => {
+            console.log('Product updated:', response);
+            this.productsService.loadProducts();
+            void this.router.navigateByUrl('/admin/products');
+          },
+          error: (err) => {
+            console.error('Error updating product:', err);
+            alert('Failed to update product. Please try again.');
+          }
+        });
       } else {
-        this.productsService.addProduct(draft);
+        this.productsService.addProduct(draft).subscribe({
+          next: (response) => {
+            console.log('Product added:', response);
+            this.productsService.loadProducts();
+            void this.router.navigateByUrl('/admin/products');
+          },
+          error: (err) => {
+            console.error('Error adding product:', err);
+            alert('Failed to add product. Please try again.');
+          }
+        });
       }
-      void this.router.navigateByUrl('/admin/products');
     }
   }
 

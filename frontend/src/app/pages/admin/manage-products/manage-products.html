@@ -13,14 +13,18 @@
   <div class="container px-4 py-3">
     <div class="d-flex align-items-center justify-content-between bg-white rounded p-3 mb-4 shadow-sm">
       <div>
-        <span class="fw-bold fs-5"><i class="bi bi-box-seam me-2"></i>All Products</span>
+        <span class="fw-bold fs-5"><i class="bi bi-box-seam me-2"></i>
+          {{ showDeleted() ? 'Deleted Products' : 'All Products' }}
+        </span>
       </div>
       <div class="d-flex gap-2">
+        @if (!showDeleted()) {
         <button class="btn btn-outline-primary btn-sm" (click)="openAddModal()">
           <i class="bi bi-plus-circle me-1"></i> Add Product
         </button>
-        <button class="btn btn-outline-secondary btn-sm">
-          <i class="bi bi-trash me-1"></i> Show Deleted
+        }
+        <button class="btn btn-outline-secondary btn-sm" (click)="toggleDeleted()">
+          <i class="bi bi-trash me-1"></i> {{ showDeleted() ? 'Show All' : 'Show Deleted' }}
         </button>
       </div>
     </div>
@@ -40,6 +44,7 @@
     }
 
     @else {
+    @if (!showDeleted()) {
     @for (product of productsService.products(); track product._id) {
     <div class="col-12 mb-4">
       <div class="card shadow-sm border">
@@ -66,10 +71,12 @@
 
           <div class="col-md-3 d-flex align-items-center justify-content-center p-4">
             <div class="d-flex flex-column gap-2 w-100">
-              <button class="btn btn-warning btn-sm d-flex align-items-center justify-content-center gap-1">
+              <button class="btn btn-warning btn-sm d-flex align-items-center justify-content-center gap-1"
+                (click)="openEditModal(product)">
                 <i class="bi bi-pencil"></i> edit product
               </button>
-              <button class="btn btn-danger btn-sm d-flex align-items-center justify-content-center gap-1">
+              <button class="btn btn-danger btn-sm d-flex align-items-center justify-content-center gap-1"
+                (click)="deleteProduct(product._id)">
                 <i class="bi bi-trash"></i> delete product
               </button>
             </div>
@@ -77,6 +84,50 @@
         </div>
       </div>
     </div>
+    }
+    }
+
+    @else {
+    @for (product of productsService.hidden(); track product._id) {
+    <div class="col-12 mb-4">
+      <div class="card shadow-sm border border-danger">
+        <div class="row g-0 d-flex align-items-center">
+          <div class="col-md-3 p-3">
+            <img [src]="product.image" alt="{{ product.name }}" class="img-fluid rounded w-100"
+              style="object-fit: cover; height: 180px;">
+          </div>
+
+          <div class="col-md-6">
+            <div class="card-body p-4">
+              <h4 class="card-title fw-bold mb-2">{{ product.name }}</h4>
+              <p class="card-text text-muted mb-3">{{ product.description }}</p>
+
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex gap-2 mb-3">
+                  <span class="badge bg-danger fs-6">Deleted</span>
+                  <span class="badge bg-primary fs-6">{{ product.category }}</span>
+                </div>
+                <p>Deleted At: {{ product.deletedAt | date }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3 d-flex align-items-center justify-content-center p-4">
+            <div class="d-flex flex-column gap-2 w-100">
+              <button class="btn btn-success btn-sm d-flex align-items-center justify-content-center gap-1"
+                (click)="restoreProduct(product._id)">
+                <i class="bi bi-arrow-counterclockwise"></i> restore product
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    } @empty {
+    <div class="text-center my-5">
+      <p class="text-muted">No deleted products found</p>
+    </div>
+    }
     }
     }
   </div>

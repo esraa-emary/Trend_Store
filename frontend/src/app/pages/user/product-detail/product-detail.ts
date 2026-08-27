@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ProductsService } from '../../services/products-service/products-service';
-import { CartService } from '../../services/cart-service/cart-service';
+import { ProductsService } from '../../../services/products-service/products-service';
+import { CartService } from '../../../services/cart-service/cart-service';
 import { CommonModule } from '@angular/common';
 
 @Component({

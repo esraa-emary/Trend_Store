@@ -5,7 +5,7 @@ const cartSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
         required: [true, "User is required"],
-        unique: true // كل يوزر ليه سلة واحدة نشطة
+        unique: true 
     },
     cartItems: [{
         product: {
@@ -17,7 +17,7 @@ const cartSchema = mongoose.Schema({
             type: Number,
             default: 1
         },
-        price: { // بنسجل السعر وقت الإضافة للسلة عشان لو سعر المنتج اتغير بعدين
+        price: {
             type: Number,
             required: true
         }

@@ -1,51 +1,69 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, httpResource } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { IProduct, ProductResponse } from '../../models/iproduct';
+import { ApiResponse } from '../../models/api-response';
 
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
-  private readonly http = inject(HttpClient);
+  private readonly _http = inject(HttpClient);
+  readonly apiLink = 'http://localhost:3000/products';
+
   readonly products = signal<IProduct[]>([]);
   readonly isLoading = signal(true);
   readonly error = signal<string | null>(null);
   readonly id = signal<string | null>(null);
+
   readonly selectedProduct = computed(() =>
-    this.products().find(product => product._id === this.id()) ?? null,
+    this.products().find(product => product._id === this.id()) ?? null
   );
 
   constructor() {
-    void this.loadProducts();
+    this.loadProducts();
   }
 
-  async loadProducts(): Promise<void> {
+  loadProducts() {
     this.isLoading.set(true);
-    try {
-      const result = await firstValueFrom(
-        this.http.get<ProductResponse>('/product'),
-      );
-      this.products.set(result.data ?? []);
-      this.error.set(null);
-    } catch {
-      this.error.set('Unable to load products. Start the API server and try again.');
-    } finally {
-      this.isLoading.set(false);
-    }
+    this._http.get<ProductResponse>(this.apiLink).subscribe({
+      next: (res) => {
+        this.products.set(res.data ?? []);
+        this.isLoading.set(false);
+        this.error.set(null);
+      },
+      error: (err) => {
+        console.error(err);
+        this.error.set('Unable to load products.');
+        this.isLoading.set(false);
+      }
+    });
   }
 
-  addProduct(product: Omit<IProduct, '_id'>): IProduct {
-    const created: IProduct = { ...product, _id: crypto.randomUUID() };
-    this.products.update(products => [...products, created]);
-    return created;
+  hidden = signal<IProduct[]>([]);
+
+  loadDeletedProducts() {
+    this._http.get<ProductResponse>(`${this.apiLink}/hidden`).subscribe({
+      next: (res) => {
+        this.hidden.set(res.data ?? []);
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
   }
 
-  updateProduct(id: string, product: Partial<Omit<IProduct, '_id'>>): void {
-    this.products.update(products => products.map(item =>
-      item._id === id ? { ...item, ...product } : item,
-    ));
+  restoreProduct(id: string): Observable<any> {
+    return this._http.patch(`${this.apiLink}/restore/${id}`, {});
   }
 
-  deleteProduct(id: string): void {
-    this.products.update(products => products.filter(product => product._id !== id));
+  addProduct(productData: any): Observable<ApiResponse<IProduct>> {
+    return this._http.post<ApiResponse<IProduct>>(this.apiLink, productData);
+  }
+
+  updateProduct(id: string, productData: any): Observable<ApiResponse<IProduct>> {
+    return this._http.patch<ApiResponse<IProduct>>(`${this.apiLink}/${id}`, productData);
+  }
+
+  deleteProduct(id: string): Observable<any> {
+    return this._http.patch(`${this.apiLink}/hide/${id}`, {});
   }
 }
