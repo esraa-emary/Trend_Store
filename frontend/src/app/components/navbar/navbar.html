@@ -1,0 +1,172 @@
+<header class="site-header">
+
+  <div class="header-container">
+
+    <!-- Logo -->
+    <a routerLink="/" class="brand-logo">
+      atelier/noir
+    </a>
+
+
+    <!-- Desktop Navigation -->
+    <nav class="main-navigation" aria-label="Main navigation">
+
+      <a routerLink="/products" class="nav-link">
+        Shop all
+      </a>
+
+      <a routerLink="/products" class="nav-link">
+        New in
+      </a>
+
+      <a routerLink="/products" class="nav-link">
+        Clothing
+      </a>
+
+      <a routerLink="/products" class="nav-link">
+        Accessories
+      </a>
+
+      <a routerLink="/products" class="nav-link">
+        Journal
+      </a>
+
+    </nav>
+
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+
+      <!-- Search -->
+      <button
+        type="button"
+        class="header-icon-button"
+        aria-label="Search"
+        routerLink="/products"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          class="header-icon"
+        >
+          <circle cx="11" cy="11" r="6.5"></circle>
+          <path d="M16 16l5 5"></path>
+        </svg>
+      </button>
+
+
+      <!-- Account -->
+      <button
+        type="button"
+        class="header-icon-button"
+        aria-label="Account"
+        routerLink="/profile"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          class="header-icon"
+        >
+          <circle cx="12" cy="8" r="3.5"></circle>
+          <path d="M5.5 20c.6-3.7 2.9-5.6 6.5-5.6s5.9 1.9 6.5 5.6"></path>
+        </svg>
+      </button>
+
+
+      <!-- Cart -->
+      <button
+        type="button"
+        class="header-icon-button cart-button"
+        aria-label="Shopping bag"
+        routerLink="/cart"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          class="header-icon"
+        >
+          <path d="M5 8.5h14v11H5z"></path>
+          <path d="M9 9V6.5a3 3 0 0 1 6 0V9"></path>
+        </svg>
+
+        <span class="cart-badge">
+          1
+        </span>
+      </button>
+
+
+      <!-- Mobile Menu Button -->
+      <button
+        type="button"
+        class="mobile-menu-button"
+        (click)="toggleMenu()"
+        [attr.aria-expanded]="isMenuOpen"
+        aria-label="Toggle navigation"
+      >
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- Mobile Navigation -->
+  <nav
+    class="mobile-navigation"
+    [class.open]="isMenuOpen"
+    aria-label="Mobile navigation"
+  >
+
+    <a
+      routerLink="/products"
+      class="mobile-nav-link"
+      (click)="closeMenu()"
+    >
+      Shop all
+    </a>
+
+    <a
+      routerLink="/products"
+      class="mobile-nav-link"
+      (click)="closeMenu()"
+    >
+      New in
+    </a>
+
+    <a
+      routerLink="/products"
+      class="mobile-nav-link"
+      (click)="closeMenu()"
+    >
+      Clothing
+    </a>
+
+    <a
+      routerLink="/products"
+      class="mobile-nav-link"
+      (click)="closeMenu()"
+    >
+      Accessories
+    </a>
+
+    <a
+      routerLink="/products"
+      class="mobile-nav-link"
+      (click)="closeMenu()"
+    >
+      Journal
+    </a>
+
+  </nav>
+
+
+  <!-- Shipping Bar -->
+  <div class="shipping-bar">
+    <span>
+      COMPLIMENTARY SHIPPING ON ORDERS OVER $150
+    </span>
+  </div>
+
+</header>
