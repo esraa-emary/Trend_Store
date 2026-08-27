@@ -1,0 +1,43 @@
+<div class="container py-5 mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2 class="serif-font mb-4 text-center">Checkout</h2>
+
+      @if (errorMessage()) {
+        <div class="alert alert-danger rounded-0 mb-4">{{ errorMessage() }}</div>
+      }
+
+      <div class="card rounded-0 border-dark p-4 bg-white mb-4">
+        <h5 class="mb-3 pb-2 border-bottom border-dark">Order Summary</h5>
+        <div class="d-flex justify-content-between mb-2">
+          <span>Total Products:</span>
+          <span>{{ cartService.totalItems() }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+          <span class="fw-bold">Total Amount:</span>
+          <span class="fw-bold text-success">${{ cartService.totalPrice() }}</span>
+        </div>
+      </div>
+
+      <form (submit)="placeOrder(); $event.preventDefault()">
+        <div class="mb-3">
+          <label class="form-label text-muted text-uppercase" style="font-size: 0.75rem; letter-spacing: 1px;">Shipping Address</label>
+          <textarea [(ngModel)]="shippingAddress" name="shippingAddress" class="form-control rounded-0 border-dark" rows="3" required></textarea>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label text-muted text-uppercase" style="font-size: 0.75rem; letter-spacing: 1px;">Phone Number</label>
+          <input type="text" [(ngModel)]="phoneNumber" name="phoneNumber" class="form-control rounded-0 border-dark" required>
+        </div>
+
+        <button type="submit" class="btn btn-dark w-100 rounded-0 py-2 text-uppercase" style="letter-spacing: 1px; font-size: 0.8rem;" [disabled]="isLoading()">
+          @if (isLoading()) {
+            <span>Processing Order...</span>
+          } @else {
+            <span>Complete Order</span>
+          }
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

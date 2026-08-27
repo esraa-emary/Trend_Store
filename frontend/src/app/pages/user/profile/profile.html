@@ -1,0 +1,91 @@
+<div class="container py-5 mt-4">
+  <div class="row">
+    <!-- الشريط الجانبي (Sidebar) -->
+    <div class="col-md-3">
+      <h6 class="text-muted text-uppercase mb-1" style="letter-spacing: 2px; font-size: 0.75rem;">Welcome Back</h6>
+      <h1 class="mb-5 serif-font" style="font-size: 3.5rem;">
+        Hello, {{ userName() }}.
+      </h1>
+
+      <ul class="list-unstyled d-flex flex-column gap-3 mt-4">
+        <li><a routerLink="/profile" routerLinkActive="fw-bold" class="text-dark text-decoration-none">Account overview</a></li>
+        <li><a routerLink="/my-orders" routerLinkActive="fw-bold" class="text-muted text-decoration-none hover-dark">Orders</a></li>
+
+        @if (userRole()?.toLowerCase() === 'admin') {
+          <li><a routerLink="/admin/dashboard" class="text-muted text-decoration-none hover-dark">Admin portal</a></li>
+          <li><a routerLink="/admin/products" class="text-muted text-decoration-none hover-dark">Manage Products</a></li>
+        }
+
+        <li><a (click)="logout()" class="text-danger text-decoration-none hover-dark" style="cursor: pointer;">Log out</a></li>
+      </ul>
+    </div>
+
+    <!-- المحتوى الرئيسي (Account Overview Content) -->
+    <div class="col-md-9 px-5">
+      <h3 class="serif-font mb-4 pb-2 border-bottom border-dark">Account Overview</h3>
+
+      <!-- بطاقة معلومات الحساب الشخصية -->
+      <div class="card rounded-0 border-dark p-4 bg-transparent mb-4">
+        <h5 class="serif-font mb-3">Profile Details</h5>
+        <div class="row">
+          <div class="col-sm-6 mb-3">
+            <span class="text-muted text-uppercase d-block" style="font-size: 0.7rem; letter-spacing: 1px;">Full Name</span>
+            <span class="fw-bold fs-6">{{ userName() }}</span>
+          </div>
+          <div class="col-sm-6 mb-3">
+            <span class="text-muted text-uppercase d-block" style="font-size: 0.7rem; letter-spacing: 1px;">Email Address</span>
+            <span class="fw-bold fs-6">{{ userEmail() }}</span>
+          </div>
+          <div class="col-sm-6">
+            <span class="text-muted text-uppercase d-block" style="font-size: 0.7rem; letter-spacing: 1px;">Account Role</span>
+            <span class="badge bg-dark rounded-0 text-uppercase" style="font-size: 0.65rem;">{{ userRole() || 'Customer' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- البطاقات السفلية (الطلبات والـ Wishlist) -->
+      <div class="row g-4">
+
+        <!-- أحدث طلب -->
+        <div class="col-md-6">
+          <div class="card h-100 rounded-0 bg-transparent border-dark">
+            <div class="card-body p-4 d-flex flex-column">
+              <h6 class="text-muted text-uppercase mb-4" style="letter-spacing: 2px; font-size: 0.75rem;">Recent Order</h6>
+
+              @if (isLoadingOrder()) {
+                <p class="text-muted">Loading order...</p>
+              } @else if (recentOrder(); as order) {
+                <h3 class="serif-font mb-3">#{{ order._id.substring(0, 7) | uppercase }}</h3>
+                <p class="text-muted mb-5">Status: {{ order.isShipped ? 'Shipped' : 'Pending' }}</p>
+              } @else {
+                <h3 class="serif-font mb-3">No Orders</h3>
+                <p class="text-muted mb-5">You have no recent orders.</p>
+              }
+
+              <div class="mt-auto">
+                <a routerLink="/my-orders" class="text-dark fw-bold text-decoration-none text-uppercase border-bottom border-dark pb-1" style="letter-spacing: 1px; font-size: 0.75rem;">View Orders</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- القطع المحفوظة (Wishlist) -->
+        <div class="col-md-6">
+          <div class="card h-100 rounded-0 bg-transparent border-dark">
+            <div class="card-body p-4 d-flex flex-column">
+              <h6 class="text-muted text-uppercase mb-4" style="letter-spacing: 2px; font-size: 0.75rem;">Saved Pieces</h6>
+
+              <h3 class="serif-font mb-3">{{ wishlistService.wishlistIds().length }} items</h3>
+              <p class="text-muted mb-5">Your edit, saved for later.</p>
+
+              <div class="mt-auto">
+                <a routerLink="/shop" class="text-dark fw-bold text-decoration-none text-uppercase border-bottom border-dark pb-1" style="letter-spacing: 1px; font-size: 0.75rem;">Browse Collection</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

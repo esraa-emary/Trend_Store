@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-lg border-bottom border-dark" style="background-color: transparent;">
+  <div class="container-fluid px-4">
+    <!-- اللوجو يوجه للرئيسية -->
+    <a class="navbar-brand text-dark" style="font-family: 'Times New Roman', serif; font-size: 1.8rem;" routerLink="/">atelier/noir</a>
+
+    <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-4">
+      <li class="nav-item"><a class="nav-link text-dark" routerLink="/shop">Shop all</a></li>
+      <!-- New in: يفلتر حسب الأحدث باستخدام createdAt -->
+      <li class="nav-item"><a class="nav-link text-dark" routerLink="/shop" [queryParams]="{filter: 'new'}">New in</a></li>
+      <!-- Clothing: يفلتر حسب تصنيف Shoes أو الفئة المطلوبة -->
+      <li class="nav-item"><a class="nav-link text-dark" routerLink="/shop" [queryParams]="{category: 'Shoes'}">Clothing</a></li>
+      <!-- Accessories: يفلتر حسب تصنيف Shoes -->
+      <li class="nav-item"><a class="nav-link text-dark" routerLink="/shop" [queryParams]="{category: 'Shoes'}">Accessories</a></li>
+      <!-- Journal يوجه للرئيسية أيضاً -->
+      <li class="nav-item"><a class="nav-link text-dark" routerLink="/">Journal</a></li>
+    </ul>
+
+    <div class="d-flex gap-3 align-items-center">
+      <a routerLink="/shop" class="text-dark text-decoration-none">
+        <i class="bi bi-search fs-5 cursor-pointer"></i>
+      </a>
+
+      <a routerLink="/profile" class="text-dark text-decoration-none">
+        <i class="bi bi-person fs-5 cursor-pointer"></i>
+      </a>
+
+      <a routerLink="/cart" class="position-relative cursor-pointer text-dark text-decoration-none">
+        <i class="bi bi-bag fs-5"></i>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark" style="font-size: 0.6rem;">
+          {{ cartService.totalItems() }}
+        </span>
+      </a>
+    </div>
+  </div>
+</nav>
+<div class="text-center py-2 border-bottom border-dark" style="font-size: 0.75rem; letter-spacing: 2px;">
+  COMPLIMENTARY SHIPPING ON ORDERS OVER $150
+</div>

@@ -2,10 +2,11 @@
     <div class="p-4 pb-0">
         <h2 class="fs-1 text-center">Dashboard</h2>
     </div>
-
     <div class="container-fluid p-4">
+
         <div class="row g-4 mb-4">
-            @for (stat of stats; track stat.title) {
+            <!-- تم تعديل حلقة التكرار لتقرأ من الدالة ()stats -->
+            @for (stat of stats(); track stat.title) {
             <div class="col-md-6 col-lg-3">
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-body p-4">
@@ -44,22 +45,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @for (order of recentOrders; track order.id) {
+                            @for (order of recentOrders(); track order._id) {
                             <tr>
-                                <td class="text-center">{{ order.id }}</td>
-                                <td class="text-center">{{ order.customer }}</td>
-                                <td class="text-center">{{ order.date }}</td>
-                                <td class="text-center fw-bold">${{ order.total }}</td>
+                                <td class="text-center">{{ order._id | slice:0:8 }}...</td>
+                                <td class="text-center">{{ order.user?.name || 'Unknown' }}</td>
+                                <td class="text-center">{{ order.createdAt | date }}</td>
+                                <td class="text-center fw-bold">${{ order.totalPrice }}</td>
                                 <td class="text-center">
-                                    <span class="badge" [ngClass]="{
-                                    'bg-warning text-dark': order.status === 'Pending',
-                                    'bg-success': order.status === 'Shipped',
-                                    'bg-info text-dark': order.status === 'Processing'
-                                }">
-                                        {{ order.status }}
+                                    <span class="badge" [ngClass]="order.isShipped ? 'bg-success' : 'bg-warning text-dark'">
+                                        {{ order.isShipped ? 'Shipped' : 'Pending' }}
                                     </span>
                                 </td>
                             </tr>
+                            } @empty {
+                              <tr><td colspan="5" class="text-center py-4 text-muted">No orders found.</td></tr>
                             }
                         </tbody>
                     </table>
@@ -67,7 +66,6 @@
             </div>
         </div>
 
-        <!-- Active Users Section -->
         <div class="card shadow-sm border-0">
             <div class="card-header bg-white d-flex justify-content-between align-items-center p-3 border-bottom">
                 <h5 class="fw-bold mb-0">Active Users</h5>
@@ -88,27 +86,26 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @for (user of activeUsers; track user.id) {
+                            @for (user of activeUsers(); track user._id) {
                             <tr>
-                                <td class="text-center">{{ user.id }}</td>
+                                <td class="text-center">{{ user._id | slice:0:8 }}...</td>
                                 <td class="text-center">{{ user.name }}</td>
                                 <td class="text-center">{{ user.email }}</td>
-                                <td class="text-center">{{ user.role }}</td>
+                                <td class="text-center text-capitalize">{{ user.role || 'user' }}</td>
                                 <td class="text-center">
-                                    <span class="badge" [ngClass]="{
-                                        'bg-success': user.status === 'Active',
-                                        'bg-danger': user.status === 'Inactive',
-                                        'bg-warning text-dark': user.status === 'Pending'
-                                    }">
-                                        {{ user.status }}
+                                    <span class="badge" [ngClass]="user.isActive ? 'bg-success' : 'bg-danger'">
+                                        {{ user.isActive ? 'Active' : 'Inactive' }}
                                     </span>
                                 </td>
                             </tr>
+                            } @empty {
+                              <tr><td colspan="5" class="text-center py-4 text-muted">No users found.</td></tr>
                             }
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+
     </div>
 </div>

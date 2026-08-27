@@ -2,81 +2,123 @@
     <div class="p-4 pb-0">
         <h2 class="fs-1 text-center">Products Management</h2>
     </div>
-
     <div class="container px-4 py-3">
         <div class="d-flex align-items-center justify-content-between bg-white rounded p-3 mb-4 shadow-sm">
             <div>
                 <span class="fw-bold fs-5"><i class="bi bi-box-seam me-2"></i>All Products</span>
             </div>
             <div class="d-flex gap-2">
-                <button class="btn btn-outline-primary btn-sm">
+                <button class="btn btn-outline-primary btn-sm" (click)="openAddModal()">
                     <i class="bi bi-plus-circle me-1"></i> Add Product
-                </button>
-                <button class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-trash me-1"></i> Show Deleted
                 </button>
             </div>
         </div>
 
-        @if (productsService.products.isLoading()) {
+        @if (productsService.isLoading()) {
         <div class="d-flex justify-content-center my-5">
             <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
         }
-
-        @else if (productsService.products.error()) {
+        @else if (productsService.error()) {
         <div class="alert alert-danger text-center">
-            {{ productsService.products.error()?.message }}
+            {{ productsService.error() }}
         </div>
         }
-
-        @else if (productsService.products.value(); as response) {
-        @for (product of response.data; track product._id) {
+        @else {
+        @for (product of productsService.products(); track product._id) {
         <div class="col-12 mb-4">
             <div class="card shadow-sm border">
                 <div class="row g-0 d-flex align-items-center">
                     <div class="col-md-3 p-3">
-                        <img [src]="product.image" alt="{{ product.name }}" class="img-fluid rounded w-100"
-                            style="object-fit: cover; height: 180px;">
+                        <img [src]="product.image" alt="{{ product.name }}" class="img-fluid rounded w-100" style="object-fit: cover; height: 180px;">
                     </div>
-
                     <div class="col-md-6">
                         <div class="card-body p-4">
                             <h4 class="card-title fw-bold mb-2">{{ product.name }}</h4>
                             <p class="card-text text-muted mb-3">{{ product.description }}</p>
-
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="d-flex gap-2 mb-3">
                                     <span class="badge bg-success fs-6">${{ product.price }}</span>
                                     <span class="badge bg-primary fs-6">{{ product.category }}</span>
+                                    <span class="badge bg-dark fs-6">Qty: {{ product.quantity }}</span>
                                 </div>
-                                <p>Updated At: {{ product.updatedAt | date }}</p>
                             </div>
                         </div>
                     </div>
-
                     <div class="col-md-3 d-flex align-items-center justify-content-center p-4">
                         <div class="d-flex flex-column gap-2 w-100">
-                            <button
-                                class="btn btn-secondary btn-sm d-flex align-items-center justify-content-center gap-1">
-                                <i class="bi bi-eye"></i> show product
+                            <button class="btn btn-warning btn-sm d-flex align-items-center justify-content-center gap-1" (click)="openEditModal(product)">
+                                <i class="bi bi-pencil"></i> edit
                             </button>
-                            <button
-                                class="btn btn-warning btn-sm d-flex align-items-center justify-content-center gap-1">
-                                <i class="bi bi-pencil"></i> edit product
-                            </button>
-                            <button
-                                class="btn btn-danger btn-sm d-flex align-items-center justify-content-center gap-1">
-                                <i class="bi bi-trash"></i> delete product
+                            <button class="btn btn-danger btn-sm d-flex align-items-center justify-content-center gap-1" (click)="deleteProduct(product._id)">
+                                <i class="bi bi-trash"></i> delete
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        } @empty {
+          <p class="text-center text-muted py-5">No products found.</p>
         }
         }
     </div>
 </div>
+
+<!-- Modal -->
+@if (isModalOpen()) {
+<div class="modal d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-0 border-dark">
+            <div class="modal-header border-dark">
+                <h5 class="modal-title serif-font">{{ isEditMode() ? 'Edit Product' : 'Add New Product' }}</h5>
+                <button type="button" class="btn-close" (click)="closeModal()"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form (submit)="saveProduct(); $event.preventDefault()">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted text-uppercase" style="font-size: 0.75rem;">Name</label>
+                            <input type="text" class="form-control rounded-0 border-dark" [(ngModel)]="productForm.name" name="name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted text-uppercase" style="font-size: 0.75rem;">Category</label>
+                            <input type="text" class="form-control rounded-0 border-dark" [(ngModel)]="productForm.category" name="category" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted text-uppercase" style="font-size: 0.75rem;">Description</label>
+                        <textarea class="form-control rounded-0 border-dark" rows="3" [(ngModel)]="productForm.description" name="description" required></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted text-uppercase" style="font-size: 0.75rem;">Price ($)</label>
+                            <input type="number" class="form-control rounded-0 border-dark" [(ngModel)]="productForm.price" name="price" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted text-uppercase" style="font-size: 0.75rem;">Quantity</label>
+                            <input type="number" class="form-control rounded-0 border-dark" [(ngModel)]="productForm.quantity" name="quantity" required>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-muted text-uppercase" style="font-size: 0.75rem;">Image URL</label>
+                        <input type="text" class="form-control rounded-0 border-dark" [(ngModel)]="productForm.image" name="image" required>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-outline-dark rounded-0 px-4" (click)="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-dark rounded-0 px-4" [disabled]="isLoadingModal()">
+                            @if (isLoadingModal()) {
+                                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Saving...
+                            } @else {
+                                Save Product
+                            }
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+}

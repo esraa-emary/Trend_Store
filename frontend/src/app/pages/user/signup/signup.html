@@ -1,0 +1,60 @@
+<div class="container py-5 mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+
+      <div class="text-center mb-4">
+        <h6 class="text-muted text-uppercase" style="letter-spacing: 2px; font-size: 0.75rem;">Atelier/Noir</h6>
+        <h1 class="serif-font display-5">Create Account.</h1>
+      </div>
+
+      <!-- رسالة خطأ -->
+      @if (errorMessage()) {
+        <div class="alert alert-danger rounded-0 mb-4" role="alert" style="font-size: 0.9rem;">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <!-- رسالة نجاح -->
+      @if (successMessage()) {
+        <div class="alert alert-success rounded-0 mb-4" role="alert" style="font-size: 0.9rem;">
+          {{ successMessage() }}
+        </div>
+      }
+
+      <form (submit)="onSignup(); $event.preventDefault()">
+        <div class="mb-3">
+          <label class="form-label text-muted text-uppercase" style="font-size: 0.75rem; letter-spacing: 1px;">Full Name</label>
+          <input type="text" [(ngModel)]="name" name="name" class="form-control rounded-0 bg-transparent border-dark" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label text-muted text-uppercase" style="font-size: 0.75rem; letter-spacing: 1px;">Email Address</label>
+          <input type="email" [(ngModel)]="email" name="email" class="form-control rounded-0 bg-transparent border-dark" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label text-muted text-uppercase" style="font-size: 0.75rem; letter-spacing: 1px;">Phone Number (Optional)</label>
+          <input type="text" [(ngModel)]="phoneNumber" name="phoneNumber" class="form-control rounded-0 bg-transparent border-dark">
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label text-muted text-uppercase" style="font-size: 0.75rem; letter-spacing: 1px;">Password</label>
+          <input type="password" [(ngModel)]="password" name="password" class="form-control rounded-0 bg-transparent border-dark" required minlength="6">
+        </div>
+
+        <button type="submit" class="btn btn-dark w-100 rounded-0 py-2 text-uppercase mb-3" style="letter-spacing: 1px; font-size: 0.8rem;" [disabled]="isLoading()">
+          @if (isLoading()) {
+            <span>Creating account...</span>
+          } @else {
+            <span>Sign Up</span>
+          }
+        </button>
+
+        <div class="text-center">
+          <a routerLink="/login" class="text-dark text-decoration-none border-bottom border-dark pb-1" style="font-size: 0.8rem; letter-spacing: 1px;">Already have an account? Sign in</a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

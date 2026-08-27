@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { UsersService } from '../../../services/users-service/users-service';
+import { UserService } from '../../../services/users-service/users-service';
 
 @Component({
   selector: 'app-manage-users',
@@ -11,6 +10,5 @@ import { UsersService } from '../../../services/users-service/users-service';
   styleUrls: ['./manage-users.css']
 })
 export class ManageUsers {
-  usersService = inject(UsersService);
-  router = inject(Router);
+  usersService = inject(UserService);
 }
