@@ -42,7 +42,7 @@ export const routes: Routes = [
             { path: "signup", component: Signup },
             { path: "confirm-email", component: ConfirmEmail },
             { path: "forget-password", component: ForgetPassword },
-            { path: "reset-password", component: ResetPassword }
+            { path: "reset-password/:token", component: ResetPassword }
         ]
     },
     {

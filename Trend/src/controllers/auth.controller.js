@@ -197,7 +197,7 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
   const resetToken = await crypto.randomBytes(32).toString("hex")
   findUser.resetToken = resetToken
   await findUser.save()
-  const link = `http://localhost:3000/auth/reset-password/${resetToken}`
+  const link = `http://localhost:4200/auth/reset-password/${resetToken}`
   sendEmail(email, "reset password link", template(link, findUser.name, "Reset Link"))
   res.status(200).json({
     success: true,
@@ -209,13 +209,14 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
 exports.resetPassword = catchAsync(async (req, res, next) => {
   const { token } = req.params
   const { password } = req.body
+  if (!token) return next(new AppError(400, 'The reset token is required'))
   const findUser = await User.findOne({ resetToken: token })
   if (!findUser) return next(new AppError(400, 'The reset token is invalid or expired'))
   if (!password || password.length < 6) {
     return next(new AppError(400, 'Password must 6 char or more'))
   }
-  const hashedPassword = await bcrypt.hash(password, +process.env.SALT_ROUND)
-  findUser.password = hashedPassword
+  // The user model hashes modified passwords before saving.
+  findUser.password = password
   findUser.resetToken = undefined
   await findUser.save()
   res.status(200).json({
