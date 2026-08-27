@@ -6,7 +6,7 @@ const transporter = nodemailer.createTransport({
   secure: false, 
   auth: {
     user: process.env.USER_EMAIL,
-    pass: process.env.USER_PASS,
+    pass: process.env.USER_PASS?.replace(/\s/g, ''),
   },
 });
 
@@ -25,6 +25,7 @@ async function sendEmail (to,subject,html,text="") {
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
         } catch (err) {
         console.error("Error while sending mail:", err);
+        throw err;
         }
 }
 

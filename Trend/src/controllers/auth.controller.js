@@ -2,7 +2,6 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const { promisify } = require("util")
 const crypto = require("crypto")
-const { customAlphabet } = require("nanoid")
 const User = require("../models/user.model")
 const AppError = require("../utils/AppError")
 const catchAsync = require("../utils/catchAsync")
@@ -76,21 +75,29 @@ exports.signup = catchAsync(async (req, res, next) => {
   }
 
 
-  // Create user
+  const confirmOTP = String(Math.floor(100000 + Math.random() * 900000));
+
+  // Store the OTP securely and require email confirmation before login.
   const newUser = await User.create({
     name,
     email,
     password,
-    phoneNumber
+    phoneNumber,
+    isActive: false,
+    confirmOTP: await bcrypt.hash(confirmOTP, 12),
+    OTPExpire: new Date(Date.now() + 10 * 60 * 1000)
   });
 
-
-  // Send token
-  createSendToken(
-    newUser,
-    201,
-    res
+  await sendEmail(
+    email,
+    "Confirm your Trend Store email",
+    template(confirmOTP, name, "Email Confirmation Code")
   );
+
+  res.status(201).json({
+    status: "success",
+    message: "Account created. Please check your email for the confirmation code."
+  });
 });
 
 // login --mohammed
