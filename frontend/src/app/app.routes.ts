@@ -12,28 +12,32 @@ import { ProductForm } from './pages/admin/product-form/product-form';
 import { UserLayoutComponent } from './layouts/user-layout/user-layout';
 import { HomeComponent } from './pages/user/user-home/user-home';
 import { ProductsComponent } from './pages/user/products/products';
+import { Profile } from './pages/user/profile/profile';
+import { authGuard } from './guards/auth/auth-guard';
+import { Login } from './pages/user/login/login';
+import { Signup } from './pages/user/signup/signup';
+import { UserOrders } from './pages/user/user-orders/user-orders';
+import { ConfirmEmail } from './pages/user/confirm-email/confirm-email';
 
 export const routes: Routes = [
     {
-        path: '',
-        component: UserLayoutComponent,
-
-        children: [
+        path: '', component: UserLayoutComponent, children: [
             { path: '', redirectTo: "home", pathMatch: "full" },
             { path: 'home', component: HomeComponent },
-            { path: 'products', component: ProductsComponent }
-
+            { path: 'products', component: ProductsComponent },
+            { path: 'profile', component: Profile, canActivate: [authGuard] },
+            { path: "my-orders", component: UserOrders, canActivate: [authGuard] },
+            { path: "login", component: Login },
+            { path: "signup", component: Signup },
+            { path: 'products/:id', component: ProductDetails },
+            { path: 'cart', component: CartComponent },
+            { path: 'checkout', component: CheckoutComponent },
+            { path: "confirm-email", component: ConfirmEmail }
         ]
     },
-
-    { path: '', component: ProductDetails },
-    { path: 'products/:id', component: ProductDetails },
-    { path: 'cart', component: CartComponent },
-    { path: 'checkout', component: CheckoutComponent },
     {
         path: "admin",
-        component: AdminLayout,
-        children: [
+        component: AdminLayout, children: [
             { path: "", redirectTo: "dashboard", pathMatch: "full" },
             { path: "dashboard", component: Dashboard },
             { path: "orders", component: ManageOrders },
