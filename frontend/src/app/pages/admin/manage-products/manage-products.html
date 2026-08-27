@@ -1,26 +1,83 @@
-<div class="vh-100 d-flex flex-column">
-    <div class="p-4">
-        <h2 class="fs-1">Products Management</h2>
+@if (showAddModal()) {
+<app-add-modal (closed)="closeModals()"></app-add-modal>
+}
+@if (editingProduct(); as product) {
+<app-edit-modal [product]="product" (closed)="closeModals()"></app-edit-modal>
+}
+
+<div>
+  <div class="p-4 pb-0">
+    <h2 class="fs-1 text-center">Products Management</h2>
+  </div>
+
+  <div class="container px-4 py-3">
+    <div class="d-flex align-items-center justify-content-between bg-white rounded p-3 mb-4 shadow-sm">
+      <div>
+        <span class="fw-bold fs-5"><i class="bi bi-box-seam me-2"></i>All Products</span>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-primary btn-sm" (click)="openAddModal()">
+          <i class="bi bi-plus-circle me-1"></i> Add Product
+        </button>
+        <button class="btn btn-outline-secondary btn-sm">
+          <i class="bi bi-trash me-1"></i> Show Deleted
+        </button>
+      </div>
     </div>
 
-    <div class="table-responsive overflow-auto" style="max-height: 85vh;">
-        <table class="table table-fixed bg-warning-subtle table-hover p-4 w-100" style="table-layout: fixed;">
-            <thead class="table-dark fs-4">
-                <tr>
-                    @for (key of columns; track key) {
-                    <th scope="col" class="text-center">{{ key | titlecase }}</th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @for (product of products; track product.id) {
-                <tr class="border-top border-dark">
-                    @for (key of columns; track key) {
-                    <td style="background-color: var(--first-color);" class="text-center">{{ product[key] }}</td>
-                    }
-                </tr>
-                }
-            </tbody>
-        </table>
+    @if (productsService.isLoading()) {
+    <div class="d-flex justify-content-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
     </div>
+    }
+
+    @else if (productsService.error()) {
+    <div class="alert alert-danger text-center">
+      {{ productsService.error() }}
+    </div>
+    }
+
+    @else {
+    @for (product of productsService.products(); track product._id) {
+    <div class="col-12 mb-4">
+      <div class="card shadow-sm border">
+        <div class="row g-0 d-flex align-items-center">
+          <div class="col-md-3 p-3">
+            <img [src]="product.image" alt="{{ product.name }}" class="img-fluid rounded w-100"
+              style="object-fit: cover; height: 180px;">
+          </div>
+
+          <div class="col-md-6">
+            <div class="card-body p-4">
+              <h4 class="card-title fw-bold mb-2">{{ product.name }}</h4>
+              <p class="card-text text-muted mb-3">{{ product.description }}</p>
+
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex gap-2 mb-3">
+                  <span class="badge bg-success fs-6">${{ product.price }}</span>
+                  <span class="badge bg-primary fs-6">{{ product.category }}</span>
+                </div>
+                <p>Updated At: {{ product.updatedAt | date }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3 d-flex align-items-center justify-content-center p-4">
+            <div class="d-flex flex-column gap-2 w-100">
+              <button class="btn btn-warning btn-sm d-flex align-items-center justify-content-center gap-1">
+                <i class="bi bi-pencil"></i> edit product
+              </button>
+              <button class="btn btn-danger btn-sm d-flex align-items-center justify-content-center gap-1">
+                <i class="bi bi-trash"></i> delete product
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+    }
+  </div>
 </div>

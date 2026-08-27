@@ -1,203 +1,21 @@
-import { TitleCasePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { UsersService } from '../../../services/users-service/users-service';
 
 @Component({
-  imports: [TitleCasePipe],
   selector: 'app-manage-users',
-  styleUrl: './manage-users.css',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './manage-users.html',
+  styleUrls: ['./manage-users.css']
 })
 export class ManageUsers {
-  columns: string[] = ['id', 'name', 'email', 'phone', 'role', 'status'];
+  usersService = inject(UsersService);
+  router = inject(Router);
 
-  users: any = [{
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "admin",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "admin",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "admin",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "admin",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "admin",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  }, {
-    id: 1,
-    name: "esraa",
-    email: "dddddddddd",
-    phone: "1111111111",
-    role: "user",
-    status: "active"
-  },]
+  getTotalActiveUsers(): number {
+    const users = this.usersService.users.value()?.data || [];
+    return users.filter(user => user.isActive === true).length;
+  }
 }

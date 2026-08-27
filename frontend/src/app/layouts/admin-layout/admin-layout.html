@@ -1,10 +1,11 @@
-<div class="row vh-100 w-100 g-0">
-    <div style="background-color: var(--first-color); border-right: 2px solid black;"
-        class="col-2 min-vh-100 d-flex justify-content-center align-items-center">
+<div class="w-100 d-flex flex-column">
+    <div class="sidebar-wrapper w-100 fixed-top"
+        style="z-index: 1000; border-bottom: 2px solid #000; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); background-color: rgba(239, 234, 207, 0.8);">
         <app-sidebar></app-sidebar>
     </div>
 
-    <div style="background-color: var(--first-color);" class="col-10 min-vh-100">
+    <div class="content-wrapper flex-grow-1"
+        style="padding-top: 80px; min-height: 100vh; background-color: var(--first-color);">
         <router-outlet></router-outlet>
     </div>
 </div>

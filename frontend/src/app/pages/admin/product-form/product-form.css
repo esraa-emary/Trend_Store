@@ -1,0 +1,8 @@
+.product-form-container { max-width: 800px; background-color: #FAF8F5; min-height: 100vh; }
+.back-office-label { font-size: 10px; letter-spacing: 2px; }
+.serif-heading { font-family: serif; }
+.back-link { font-size: 14px; }
+.product-form-box { border-color: #e5e0d8 !important; }
+.form-label-compact { font-size: 11px; letter-spacing: 1px; }
+.form-control-compact { font-size: 14px; }
+.spaced-button { letter-spacing: 1px; }

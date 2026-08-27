@@ -30,7 +30,8 @@ const productSchema = mongoose.Schema({
         required: true,
     },
     isDeleted: {
-        type: Boolean,
+        type: String,
+        enum: ['LIVE' , 'DRAFT'],
         default: false,
         select: false
     },

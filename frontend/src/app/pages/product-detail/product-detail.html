@@ -1,0 +1,50 @@
+@if (productId(); as id) {
+  <div class="container py-5 detail-container">
+    <a class="btn btn-outline-dark mb-4" routerLink="/">Back to Products</a>
+    @if (productsService.selectedProduct(); as product) {
+      <div class="row g-4 align-items-center bg-white p-4 border">
+        <div class="col-md-6"><img [src]="product.image" [alt]="product.name" class="detail-image"></div>
+        <div class="col-md-6">
+          <span class="text-uppercase text-secondary category-label">{{ product.category }}</span>
+          <h2 class="fw-normal my-2 serif-heading">{{ product.name }}</h2>
+          <h4 class="text-dark mb-3">${{ product.price }}</h4>
+          <p class="text-secondary mb-4 product-description">{{ product.description }}</p>
+          <button class="btn btn-dark w-100 py-2 text-uppercase spaced-button" (click)="addToCart()">Add to Cart</button>
+          <a routerLink="/cart" class="btn btn-outline-dark w-100 py-2 mt-2 text-uppercase">View Cart</a>
+        </div>
+      </div>
+    } @else if (productsService.isLoading()) {
+      <p class="text-center text-secondary">Loading product details...</p>
+    } @else {
+      <h4 class="text-danger">Product not found.</h4>
+    }
+  </div>
+} @else {
+  <div class="container py-5 catalog-container">
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+      <h1 class="fw-normal m-0 serif-heading">Atelier Store</h1>
+      <a routerLink="/cart" class="btn btn-outline-dark">Cart ({{ cartService.totalItems() }})</a>
+    </div>
+    @if (productsService.isLoading()) {
+      <p class="text-center text-secondary py-5">Loading products...</p>
+    } @else if (productsService.error()) {
+      <p class="text-center text-danger py-5">{{ productsService.error() }}</p>
+    } @else {
+      <div class="row g-4">
+        @for (product of productsService.products(); track product._id) {
+          <div class="col-md-6">
+            <article class="product-card bg-white border h-100">
+              <a [routerLink]="['/products', product._id]"><img [src]="product.image" [alt]="product.name" class="catalog-image"></a>
+              <div class="p-3">
+                <span class="text-uppercase text-secondary category-label">{{ product.category }}</span>
+                <h2 class="h5 mt-2 mb-1">{{ product.name }}</h2>
+                <p class="text-secondary product-description">{{ product.description }}</p>
+                <div class="d-flex justify-content-between align-items-center"><strong>${{ product.price }}</strong><button class="btn btn-dark btn-sm" (click)="cartService.addToCart(product)">Add to Cart</button></div>
+              </div>
+            </article>
+          </div>
+        }
+      </div>
+    }
+  </div>
+}

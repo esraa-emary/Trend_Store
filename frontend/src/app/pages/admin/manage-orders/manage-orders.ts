@@ -1,77 +1,16 @@
-import { Component } from '@angular/core';
-import { TitleCasePipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { OrdersService } from '../../../services/orders-service/orders-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-orders',
   standalone: true,
-  imports: [TitleCasePipe],
+  imports: [CommonModule],
   templateUrl: './manage-orders.html',
-  styleUrl: './manage-orders.css',
+  styleUrls: ['./manage-orders.css']
 })
 export class ManageOrders {
-  columns: string[] = ['id', 'customer id', 'total price', 'status'];
-  
-  orders: any[] = [
-    {
-      id: 1,
-      "customer id": "esraa",
-      "total price": 111,
-      status: "active"
-    }, {
-      id: 1,
-      "customer id": "esraa",
-      "total price": 111,
-      status: "active"
-    }, {
-      id: 1,
-      "customer id": "esraa",
-      "total price": 111,
-      status: "active"
-    }, {
-      id: 1,
-      "customer id": "esraa",
-      "total price": 111,
-      status: "active"
-    }, {
-      id: 1,
-      "customer id": "esraa",
-      "total price": 111,
-      status: "active"
-    }, {
-      id: 1,
-      "customer id": "esraa",
-      "total price": 111,
-      status: "active"
-    }, {
-      id: 1,
-      "customer id": "esraa",
-      "total price": 111,
-      status: "active"
-    }, {
-      id: 1,
-      "customer id": "esraa",
-      "total price": 111,
-      status: "active"
-    }, {
-      id: 1,
-      "customer id": "esraa",
-      "total price": 111,
-      status: "active"
-    }, {
-      id: 1,
-      "customer id": "esraa",
-      "total price": 111,
-      status: "active"
-    }, {
-      id: 1,
-      "customer id": "esraa",
-      "total price": 111,
-      status: "active"
-    }, {
-      id: 1,
-      "customer id": "esraa",
-      "total price": 111,
-      status: "active"
-    }
-  ];
+  ordersService = inject(OrdersService);
+  router = inject(Router);
 }
