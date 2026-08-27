@@ -5,22 +5,22 @@ const router = require("express").Router()
 
 router.route("/")
     .get(getAllProducts)
-    .post(restrictTo("admin"), addProduct)
+    .post(auth, restrictTo("admin"), addProduct)
 
 router.route("/hidden")
-    .get(restrictTo("admin"), getHiddenProducts);
+    .get(auth, restrictTo("admin"), getHiddenProducts);
 
 router.route("/restore/:id")
-    .patch(restrictTo("admin"), restoreProduct);
+    .patch(auth, restrictTo("admin"), restoreProduct);
 
 router.route("/filter/:category")
     .get(filterProducts);
 
 router.route("/hide/:id")
-    .patch(restrictTo("admin"), hideProduct);
+    .patch(auth, restrictTo("admin"), hideProduct);
 
 router.route("/:id")
     .get(getOneProduct)
-    .patch(restrictTo("admin"), updateProduct);
+    .patch(auth, restrictTo("admin"), updateProduct);
 
 module.exports = router

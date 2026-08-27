@@ -33,7 +33,7 @@ export class OrdersService {
     }
 
     getMyOrders(): Observable<any> {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('accessToken');
         return this._http.get(`${this.apiLink}/my-orders`, {
             headers: { Authorization: `Bearer ${token}` }
         });

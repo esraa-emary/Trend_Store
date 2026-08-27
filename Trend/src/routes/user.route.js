@@ -3,6 +3,8 @@ const auth = require("../middlewares/auth.js");
 const restrictTo = require("../middlewares/restrictTo.js");
 const router = require("express").Router();
 
+router.use(auth);
+
 router.route("/")
     .get(restrictTo("admin"), getAllUsers);
 

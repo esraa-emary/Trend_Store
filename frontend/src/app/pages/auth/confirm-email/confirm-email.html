@@ -1,0 +1,61 @@
+<div class="confirm-container">
+  <div class="confirm-card">
+    <h1>Confirm Email</h1>
+
+    <p class="subtitle">
+      Enter your email and the confirmation code sent to you.
+    </p>
+
+    <form
+      (ngSubmit)="confirmEmail()"
+      #confirmForm="ngForm"
+    >
+      <div class="form-group">
+        <label for="email">Email</label>
+
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          [(ngModel)]="email"
+          required
+          email
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="confirmOTP">Confirmation Code</label>
+
+        <input
+          id="confirmOTP"
+          type="text"
+          name="confirmOTP"
+          placeholder="Enter confirmation code"
+          [(ngModel)]="confirmOTP"
+          required
+        />
+      </div>
+
+      @if (errorMessage) {
+        <p class="error-message">{{ errorMessage }}</p>
+      }
+
+      @if (successMessage) {
+        <p class="success-message">{{ successMessage }}</p>
+      }
+
+      <button
+        type="submit"
+        [disabled]="confirmForm.invalid || loading"
+      >
+        {{ loading ? 'Confirming...' : 'Confirm Email' }}
+      </button>
+    </form>
+
+    <p class="login-link">
+      Already confirmed?
+      <a routerLink="/auth/login">Login</a>
+    </p>
+  </div>
+</div>

@@ -16,10 +16,6 @@ export class CheckoutComponent {
   ordersService = inject(OrdersService);
   router = inject(Router);
 
-  // dummy before handling auth
-  // userId = localStorage.getItem('userId');
-  userId = '6a900f8dc8b065414fa2e904';
-
   placeOrder(e: Event) {
     e.preventDefault();
     
@@ -31,7 +27,6 @@ export class CheckoutComponent {
     }
 
     const orderData = {
-      user: this.userId,
       products: cartItems.map(item => ({
         product: item.product._id,
         quantity: item.quantity

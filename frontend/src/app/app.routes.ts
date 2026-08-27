@@ -13,11 +13,15 @@ import { UserLayoutComponent } from './layouts/user-layout/user-layout';
 import { HomeComponent } from './pages/user/user-home/user-home';
 import { ProductsComponent } from './pages/user/products/products';
 import { Profile } from './pages/user/profile/profile';
-import { authGuard } from './guards/auth/auth-guard';
-import { Login } from './pages/user/login/login';
-import { Signup } from './pages/user/signup/signup';
+import { authGuard } from './guards/auth-guard';
+import { roleGuard } from './guards/role-guard';
+import { Login } from './pages/auth/login/login';
+import { Signup } from './pages/auth/signup/signup';
 import { UserOrders } from './pages/user/user-orders/user-orders';
-import { ConfirmEmail } from './pages/user/confirm-email/confirm-email';
+import { ConfirmEmail } from './pages/auth/confirm-email/confirm-email';
+import { ForgetPassword } from './pages/auth/forget-password/forget-password';
+import { ResetPassword } from './pages/auth/reset-password/reset-password';
+import { AuthLayout } from './layouts/auth-layout/auth-layout';
 
 export const routes: Routes = [
     {
@@ -27,17 +31,23 @@ export const routes: Routes = [
             { path: 'products', component: ProductsComponent },
             { path: 'profile', component: Profile, canActivate: [authGuard] },
             { path: "my-orders", component: UserOrders, canActivate: [authGuard] },
+            { path: 'products/:id', component: ProductDetails },
+            { path: 'cart', component: CartComponent, canActivate: [authGuard] },
+            { path: 'checkout', component: CheckoutComponent, canActivate: [authGuard] }
+        ]
+    }, {
+        path: 'auth', component: AuthLayout, children: [
+            { path: '', redirectTo: "signup", pathMatch: "full" },
             { path: "login", component: Login },
             { path: "signup", component: Signup },
-            { path: 'products/:id', component: ProductDetails },
-            { path: 'cart', component: CartComponent },
-            { path: 'checkout', component: CheckoutComponent },
-            { path: "confirm-email", component: ConfirmEmail }
+            { path: "confirm-email", component: ConfirmEmail },
+            { path: "forget-password", component: ForgetPassword },
+            { path: "reset-password", component: ResetPassword }
         ]
     },
     {
         path: "admin",
-        component: AdminLayout, children: [
+        component: AdminLayout, canActivate: [authGuard, roleGuard], data: { role: 'admin' }, children: [
             { path: "", redirectTo: "dashboard", pathMatch: "full" },
             { path: "dashboard", component: Dashboard },
             { path: "orders", component: ManageOrders },

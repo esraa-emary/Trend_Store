@@ -12,9 +12,9 @@ const jwtSign = promisify(jwt.sign)
 
 // signtoken --mohammed
 // Create JWT
-const signToken = (id) => {
+const signToken = (id, role) => {
   return jwt.sign(
-    { id },
+    { id, role },
     process.env.SECRET_KEY,
     {
       expiresIn: process.env.JWT_EXPIRES_IN
@@ -26,7 +26,7 @@ const signToken = (id) => {
 // Send JWT + User
 const createSendToken = (user, statusCode, res) => {
 
-  const token = signToken(user._id);
+  const token = signToken(user._id, user.role);
 
   // Don't send password to client
   user.password = undefined;
@@ -117,7 +117,7 @@ exports.login = catchAsync(async (req, res, next) => {
   // So we explicitly select it here
   const user = await User
     .findOne({ email })
-    .select("+password");
+    .select("+password +role");
 
 
   // User doesn't exist
@@ -211,7 +211,9 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   const { password } = req.body
   const findUser = await User.findOne({ resetToken: token })
   if (!findUser) return next(new AppError(400, 'The reset token is invalid or expired'))
-  if (password.length < 6) return next(new appError(400, 'Password must 6 char or more'))
+  if (!password || password.length < 6) {
+    return next(new AppError(400, 'Password must 6 char or more'))
+  }
   const hashedPassword = await bcrypt.hash(password, +process.env.SALT_ROUND)
   findUser.password = hashedPassword
   findUser.resetToken = undefined

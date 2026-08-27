@@ -1,7 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../services/auth-service/auth-service';
 import { OrdersService } from '../../../services/orders-service/orders-service';
+import { UsersService } from '../../../services/users-service/users-service';
 
 @Component({
   selector: 'app-profile',
@@ -12,6 +14,8 @@ import { OrdersService } from '../../../services/orders-service/orders-service';
 })
 export class Profile implements OnInit {
   ordersService = inject(OrdersService);
+  private authService = inject(AuthService);
+  private usersService = inject(UsersService);
   private _router = inject(Router);
 
   userName = signal<string>('User');
@@ -22,18 +26,20 @@ export class Profile implements OnInit {
   isLoadingOrder = signal(true);
 
   ngOnInit(): void {
-    // جلب بيانات المستخدم المخزنة في الـ localStorage أثناء تسجيل الدخول
-    const storedName = localStorage.getItem('userName');
-    if (storedName) {
-      this.userName.set(storedName);
+    const payload = this.authService.getPayloadFromToken();
+    this.userRole.set(payload?.role || localStorage.getItem('role'));
+
+    if (payload?.id) {
+      this.usersService.getUserById(payload.id).subscribe({
+        next: (res) => {
+          if (res.data) {
+            this.userName.set(res.data.name);
+            this.userEmail.set(res.data.email);
+          }
+        },
+        error: (err) => console.error('Failed to load profile:', err)
+      });
     }
-
-    // إذا كنت تخزن البريد أو جلبته من الـ API، يمكنك وضعه هنا
-    // سنقوم بقراءته إن توفر في الـ localStorage أو عرضه بشكل افتراضي
-    const storedEmail = localStorage.getItem('userEmail') || 'user@ateliernoir.com';
-    this.userEmail.set(storedEmail);
-
-    this.userRole.set(localStorage.getItem('role'));
 
     // جلب أحدث طلب
     this.ordersService.getMyOrders().subscribe({
@@ -53,6 +59,6 @@ export class Profile implements OnInit {
 
   logout() {
     localStorage.clear();
-    this._router.navigate(['/login']);
+    this._router.navigate(['/auth/login']);
   }
 }

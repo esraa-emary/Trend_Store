@@ -1,0 +1,79 @@
+<div class="login-page">
+  <div class="login-wrapper">
+
+    <div class="brand">Trend Store</div>
+
+    <div class="eyebrow">WELCOME BACK</div>
+
+    <h1>Sign in to continue.</h1>
+
+    <p class="description">
+      Sign in to your account to continue shopping
+      and manage your orders.
+    </p>
+
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+
+      <div class="form-group">
+        <label for="email">Email address</label>
+
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="you@example.com"
+          [(ngModel)]="email"
+          required
+          email
+        />
+      </div>
+
+      <div class="form-group">
+        <div class="password-header">
+          <label for="password">Password</label>
+
+          <a
+            routerLink="/auth/forget-password"
+            class="forgot-password"
+          >
+            Forgot password?
+          </a>
+        </div>
+
+        <input
+          id="password"
+          type="password"
+          name="password"
+          placeholder="Enter your password"
+          [(ngModel)]="password"
+          required
+        />
+      </div>
+
+      @if (errorMessage) {
+        <p class="error-message">{{ errorMessage }}</p>
+      }
+
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid || loading"
+      >
+        {{ loading ? 'LOGGING IN...' : 'SIGN IN' }}
+      </button>
+
+    </form>
+
+    <div class="signup-section">
+      <span>Don't have an account?</span>
+
+      <a routerLink="/auth/signup">
+        Create account
+      </a>
+    </div>
+
+    <a routerLink="/" class="back-link">
+      ← Return to storefront
+    </a>
+
+  </div>
+</div>

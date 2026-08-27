@@ -34,10 +34,10 @@ exports.getOneOrder = catchAsync(async (req, res, next) => {
 
 // add --esraa
 exports.addOrder = catchAsync(async (req, res, next) => {
-    const { user, products } = req.body;
+    const { products } = req.body;
 
-    if (!user || !products || !Array.isArray(products) || products.length === 0) {
-        return next(new AppError(400, "Please provide user id and products array with items."));
+    if (!products || !Array.isArray(products) || products.length === 0) {
+        return next(new AppError(400, "Please provide a products array with items."));
     }
 
     const productIds = products.map(item => item.product);
@@ -67,7 +67,7 @@ exports.addOrder = catchAsync(async (req, res, next) => {
     console.log('Total:', total);
 
     const order = await Order.create({
-        user: user,
+        user: req.user._id,
         products: products,
         totalPrice: total
     });
