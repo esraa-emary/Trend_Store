@@ -2,13 +2,11 @@
 
   <div class="header-container">
 
-    <!-- Logo -->
     <a routerLink="/" class="brand-logo">
       Trend Store
     </a>
 
 
-    <!-- Desktop Navigation -->
     <nav class="main-navigation" aria-label="Main navigation">
 
       <a routerLink="/products" class="nav-link">
@@ -18,10 +16,8 @@
     </nav>
 
 
-    <!-- Header Actions -->
     <div class="header-actions">
 
-      <!-- Search -->
       <button type="button" class="header-icon-button" aria-label="Search" routerLink="/products">
         <svg viewBox="0 0 24 24" class="header-icon">
           <circle cx="11" cy="11" r="6.5"></circle>
@@ -30,7 +26,6 @@
       </button>
 
 
-      <!-- Account -->
       <button type="button" class="header-icon-button" aria-label="Account" routerLink="/profile">
         <svg viewBox="0 0 24 24" class="header-icon">
           <circle cx="12" cy="8" r="3.5"></circle>
@@ -39,7 +34,6 @@
       </button>
 
 
-      <!-- Cart -->
       <button type="button" class="header-icon-button cart-button" aria-label="Shopping bag" routerLink="/cart">
         <svg viewBox="0 0 24 24" class="header-icon">
           <path d="M5 8.5h14v11H5z"></path>
@@ -52,7 +46,6 @@
       </button>
 
 
-      <!-- Mobile Menu Button -->
       <button type="button" class="mobile-menu-button" (click)="toggleMenu()" [attr.aria-expanded]="isMenuOpen"
         aria-label="Toggle navigation">
 
@@ -67,7 +60,6 @@
   </div>
 
 
-  <!-- Mobile Navigation -->
   <nav class="mobile-navigation" [class.open]="isMenuOpen" aria-label="Mobile navigation">
 
     <a routerLink="/products" class="mobile-nav-link" (click)="closeMenu()">
@@ -93,7 +85,6 @@
   </nav>
 
 
-  <!-- Shipping Bar -->
   <div class="shipping-bar">
     <span>
       COMPLIMENTARY SHIPPING ON ORDERS OVER $150

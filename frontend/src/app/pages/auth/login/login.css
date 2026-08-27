@@ -189,10 +189,6 @@ button:disabled {
 }
 
 
-/* =========================
-   Responsive
-   ========================= */
-
 @media (max-width: 600px) {
   .login-page {
     align-items: flex-start;

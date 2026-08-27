@@ -158,10 +158,6 @@
 }
 
 
-/* =========================
-   Password
-   ========================= */
-
 .password-wrapper {
 
   position: relative;
@@ -177,8 +173,6 @@
 
 }
 
-
-/* Eye Button */
 
 .password-toggle {
 
@@ -238,10 +232,6 @@
 }
 
 
-/* =========================
-   Main Button
-   ========================= */
-
 form > button {
 
   width: 100%;
@@ -289,10 +279,6 @@ form > button:disabled {
 }
 
 
-/* =========================
-   Messages
-   ========================= */
-
 .error-message {
 
   margin: -2px 0 15px;
@@ -318,10 +304,6 @@ form > button:disabled {
 
 }
 
-
-/* =========================
-   Login
-   ========================= */
 
 .login-section {
 
@@ -362,10 +344,6 @@ form > button:disabled {
 }
 
 
-/* =========================
-   Back Link
-   ========================= */
-
 .back-link {
 
   display: block;
@@ -393,10 +371,6 @@ form > button:disabled {
 
 }
 
-
-/* =========================
-   Mobile
-   ========================= */
 
 @media (max-width: 600px) {
 

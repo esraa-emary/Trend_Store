@@ -15,8 +15,7 @@ export class OrdersService {
 
     orders = httpResource<OrderResponse>(() => `${this.apiLink}?limit=50`);
     order = httpResource<OrderResponse>(() => `${this.apiLink}/${this.id()}`);
-    ship = httpResource<OrderResponse>(() => `${this.apiLink}/${this.id()}`);
-
+    
     loadAllOrders() {
         this.isLoading.set(true);
         this._http.get<OrderResponse>(`${this.apiLink}?limit=50`).subscribe({

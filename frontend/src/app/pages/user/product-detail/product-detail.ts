@@ -19,7 +19,6 @@ export class ProductDetails implements OnInit {
   productId = signal<string | null>(null);
 
   ngOnInit(): void {
-    // استقبال الـ ID من الـ URL وتحديثه في الخدمة
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       this.productId.set(id);

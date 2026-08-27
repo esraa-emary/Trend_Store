@@ -40,8 +40,6 @@ export class Profile implements OnInit {
         error: (err) => console.error('Failed to load profile:', err)
       });
     }
-
-    // جلب أحدث طلب
     this.ordersService.getMyOrders().subscribe({
       next: (res: any) => {
         const orders = res.data || [];

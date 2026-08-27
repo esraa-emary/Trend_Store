@@ -1,17 +1,12 @@
 <nav class="navbar navbar-expand-lg border-bottom border-dark" style="background-color: transparent;">
   <div class="container-fluid px-4">
-    <!-- اللوجو يوجه للرئيسية -->
     <a class="navbar-brand text-dark" style="font-family: 'Times New Roman', serif; font-size: 1.8rem;" routerLink="/">atelier/noir</a>
 
     <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-4">
       <li class="nav-item"><a class="nav-link text-dark" routerLink="/shop">Shop all</a></li>
-      <!-- New in: يفلتر حسب الأحدث باستخدام createdAt -->
       <li class="nav-item"><a class="nav-link text-dark" routerLink="/shop" [queryParams]="{filter: 'new'}">New in</a></li>
-      <!-- Clothing: يفلتر حسب تصنيف Shoes أو الفئة المطلوبة -->
       <li class="nav-item"><a class="nav-link text-dark" routerLink="/shop" [queryParams]="{category: 'Shoes'}">Clothing</a></li>
-      <!-- Accessories: يفلتر حسب تصنيف Shoes -->
       <li class="nav-item"><a class="nav-link text-dark" routerLink="/shop" [queryParams]="{category: 'Shoes'}">Accessories</a></li>
-      <!-- Journal يوجه للرئيسية أيضاً -->
       <li class="nav-item"><a class="nav-link text-dark" routerLink="/">Journal</a></li>
     </ul>
 

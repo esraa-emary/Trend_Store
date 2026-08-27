@@ -29,8 +29,6 @@ export class Signup {
   async signup() {
     this.errorMessage = '';
     this.successMessage = '';
-
-    // Check password confirmation
     if (this.password !== this.confirmPassword) {
       this.errorMessage = 'Passwords do not match.';
       return;

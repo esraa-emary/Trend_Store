@@ -14,7 +14,6 @@
 
     <form (ngSubmit)="signup()" #signupForm="ngForm">
 
-      <!-- Name -->
       <div class="form-group">
         <label for="name">Full name</label>
 
@@ -30,7 +29,6 @@
       </div>
 
 
-      <!-- Email -->
       <div class="form-group">
         <label for="email">Email address</label>
 
@@ -46,7 +44,6 @@
       </div>
 
 
-      <!-- Phone -->
       <div class="form-group">
         <label for="phoneNumber">Phone number</label>
 
@@ -60,7 +57,6 @@
       </div>
 
 
-      <!-- Password -->
       <div class="form-group">
         <label for="password">Password</label>
 
@@ -92,7 +88,6 @@
       </div>
 
 
-      <!-- Confirm Password -->
       <div class="form-group">
         <label for="confirmPassword">Confirm password</label>
 
@@ -123,7 +118,6 @@
       </div>
 
 
-      <!-- Error -->
       @if (errorMessage) {
         <p class="error-message">
           {{ errorMessage }}
@@ -131,7 +125,6 @@
       }
 
 
-      <!-- Success -->
       @if (successMessage) {
         <p class="success-message">
           {{ successMessage }}
@@ -139,7 +132,6 @@
       }
 
 
-      <!-- Submit -->
       <button
         type="submit"
         [disabled]="signupForm.invalid || loading"
@@ -150,7 +142,6 @@
     </form>
 
 
-    <!-- Login -->
     <div class="login-section">
 
       <span>Already have an account?</span>
@@ -162,7 +153,6 @@
     </div>
 
 
-    <!-- Back -->
     <a routerLink="/" class="back-link">
       ← Return to storefront
     </a>

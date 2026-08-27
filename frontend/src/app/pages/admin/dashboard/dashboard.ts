@@ -4,7 +4,6 @@ import { Router, RouterLink } from '@angular/router';
 import { OrdersService } from '../../../services/orders-service/orders-service';
 import { UsersService } from '../../../services/users-service/users-service';
 import { ProductsService } from '../../../services/products-service/products-service';
-import { retry } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
