@@ -1,6 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { IProduct } from '../../../models/iproduct';
 import { ProductsService } from '../../../services/products-service/products-service';
 import { CartService } from '../../../services/cart-service/cart-service';
@@ -8,28 +9,31 @@ import { CartService } from '../../../services/cart-service/cart-service';
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './products.html',
   styleUrls: ['./products.css']
 })
 export class ProductsComponent implements OnInit {
   productsService = inject(ProductsService);
   cartService = inject(CartService);
-  
+  router = inject(Router);
+
   allProducts: IProduct[] = [];
-  
+
   selectedCategory: string = 'All';
   searchTerm: string = '';
 
   currentPage: number = 1;
   pageSize: number = 4;
 
-  ngOnInit() {
-    this.loadProducts();
+  constructor() {
+    effect(() => {
+      this.allProducts = this.productsService.products();
+    });
   }
 
-  loadProducts() {
-    this.allProducts = this.productsService.products();
+  ngOnInit() {
+    this.productsService.loadProducts();
   }
 
   addToCart(product: IProduct) {
@@ -38,9 +42,9 @@ export class ProductsComponent implements OnInit {
 
   get filteredProducts(): IProduct[] {
     return this.allProducts.filter(product => {
-      const matchesCategory = this.selectedCategory === 'All' || 
+      const matchesCategory = this.selectedCategory === 'All' ||
         product.category.toLowerCase() === this.selectedCategory.toLowerCase();
-      
+
       const matchesSearch = product.name.toLowerCase().includes(this.searchTerm.toLowerCase());
 
       return matchesCategory && matchesSearch;

@@ -15,15 +15,4 @@ router.route("/:id")
     .get(getOneOrder)
     .patch(restrictTo("admin"), shipOrder);
 
-
-// router.get("/my-orders", getUserOrders);
-
-// router.route("/")
-//     .get(getAllOrders)
-//     .post(addOrder);
-
-// router.route("/:id")
-//     .get(getOneOrder)
-//     .patch(shipOrder);
-
 module.exports = router

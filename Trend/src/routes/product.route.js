@@ -3,44 +3,24 @@ const auth = require("../middlewares/auth.js");
 const restrictTo = require("../middlewares/restrictTo.js");
 const router = require("express").Router()
 
-// router.route("/")
-//     .get(getAllProducts)
-//     .post(restrictTo("admin"), addProduct)
-
-// router.route("/hidden")
-//     .get(restrictTo("admin"), getHiddenProducts);
-
-// router.route("/restore/:id")
-//     .patch(restrictTo("admin"), restoreProduct);
-
-// router.route("/filter/:category")
-//     .get(filterProducts);
-
-// router.route("/hide/:id")
-//     .patch(restrictTo("admin"), hideProduct);
-
-// router.route("/:id")
-//     .get(getOneProduct)
-//     .patch(restrictTo("admin"), updateProduct);
-
 router.route("/")
     .get(getAllProducts)
-    .post(addProduct)
+    .post(restrictTo("admin"), addProduct)
 
 router.route("/hidden")
-    .get(getHiddenProducts);
+    .get(restrictTo("admin"), getHiddenProducts);
 
 router.route("/restore/:id")
-    .patch(restoreProduct);
+    .patch(restrictTo("admin"), restoreProduct);
 
 router.route("/filter/:category")
     .get(filterProducts);
 
 router.route("/hide/:id")
-    .patch(hideProduct);
+    .patch(restrictTo("admin"), hideProduct);
 
 router.route("/:id")
     .get(getOneProduct)
-    .patch(updateProduct);
+    .patch(restrictTo("admin"), updateProduct);
 
 module.exports = router

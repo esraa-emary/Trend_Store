@@ -5,7 +5,7 @@ import { ManageUsers } from './pages/admin/manage-users/manage-users';
 import { Dashboard } from './pages/admin/dashboard/dashboard';
 import { Error } from './pages/global/error/error';
 import { AdminLayout } from './layouts/admin-layout/admin-layout';
-import { ProductDetails } from './pages/product-detail/product-detail';
+import { ProductDetails } from './pages/user/product-detail/product-detail';
 import { CartComponent } from './pages/cart/cart';
 import { CheckoutComponent } from './pages/checkout/checkout';
 import { ProductForm } from './pages/admin/product-form/product-form';

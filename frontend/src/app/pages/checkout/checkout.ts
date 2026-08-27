@@ -18,7 +18,7 @@ export class CheckoutComponent {
 
   // dummy before handling auth
   // userId = localStorage.getItem('userId');
-  userId = '6a8ae5fa35c6baf95f28c52c';
+  userId = '6a900f8dc8b065414fa2e904';
 
   placeOrder(e: Event) {
     e.preventDefault();
