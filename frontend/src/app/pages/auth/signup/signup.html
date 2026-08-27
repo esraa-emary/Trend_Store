@@ -1,0 +1,171 @@
+<div class="signup-page">
+  <div class="signup-wrapper">
+
+    <div class="brand">atelier/noir</div>
+
+    <div class="eyebrow">CREATE ACCOUNT</div>
+
+    <h1>Start something new.</h1>
+
+    <p class="description">
+      Create your account and start shopping
+      with Trend Store.
+    </p>
+
+    <form (ngSubmit)="signup()" #signupForm="ngForm">
+
+      <!-- Name -->
+      <div class="form-group">
+        <label for="name">Full name</label>
+
+        <input
+          id="name"
+          type="text"
+          name="name"
+          placeholder="Your full name"
+          [(ngModel)]="name"
+          required
+          minlength="3"
+        />
+      </div>
+
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email address</label>
+
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="you@example.com"
+          [(ngModel)]="email"
+          required
+          email
+        />
+      </div>
+
+
+      <!-- Phone -->
+      <div class="form-group">
+        <label for="phoneNumber">Phone number</label>
+
+        <input
+          id="phoneNumber"
+          type="tel"
+          name="phoneNumber"
+          placeholder="Your phone number"
+          [(ngModel)]="phoneNumber"
+        />
+      </div>
+
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Password</label>
+
+        <div class="password-wrapper">
+
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            name="password"
+            placeholder="Create a password"
+            [(ngModel)]="password"
+            required
+            minlength="6"
+          />
+
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="showPassword = !showPassword"
+          >
+            <i
+              class="bi"
+              [class.bi-eye]="!showPassword"
+              [class.bi-eye-slash]="showPassword"
+            ></i>
+          </button>
+
+        </div>
+      </div>
+
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label for="confirmPassword">Confirm password</label>
+
+        <div class="password-wrapper">
+
+          <input
+            id="confirmPassword"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            name="confirmPassword"
+            placeholder="Confirm your password"
+            [(ngModel)]="confirmPassword"
+            required
+          />
+
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="showConfirmPassword = !showConfirmPassword"
+          >
+            <i
+              class="bi"
+              [class.bi-eye]="!showConfirmPassword"
+              [class.bi-eye-slash]="showConfirmPassword"
+            ></i>
+          </button>
+
+        </div>
+      </div>
+
+
+      <!-- Error -->
+      @if (errorMessage) {
+        <p class="error-message">
+          {{ errorMessage }}
+        </p>
+      }
+
+
+      <!-- Success -->
+      @if (successMessage) {
+        <p class="success-message">
+          {{ successMessage }}
+        </p>
+      }
+
+
+      <!-- Submit -->
+      <button
+        type="submit"
+        [disabled]="signupForm.invalid || loading"
+      >
+        {{ loading ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT' }}
+      </button>
+
+    </form>
+
+
+    <!-- Login -->
+    <div class="login-section">
+
+      <span>Already have an account?</span>
+
+      <a routerLink="/auth/login">
+        Sign in
+      </a>
+
+    </div>
+
+
+    <!-- Back -->
+    <a routerLink="/" class="back-link">
+      ← Return to storefront
+    </a>
+
+  </div>
+</div>
