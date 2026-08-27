@@ -6,8 +6,7 @@ import { PromoCardsComponent } from '../../components/promo-cards/promo-cards';
 import { FooterComponent } from '../../components/footer/footer';
 
 import { ProductComponent } from '../../components/product/product';
-import { Product } from '../../services/product.service';
-
+import { IProduct } from '../../models/iproduct';
 
 @Component({
   selector: 'app-home',
@@ -27,52 +26,50 @@ import { Product } from '../../services/product.service';
 })
 export class HomeComponent {
 
-  products: Product[] = [
+  products: IProduct[] = [
+  {
+    _id: '1',
+    name: 'Silk Slip Dress',
+    price: 168,
+    category: 'Dresses',
+    quantity: 10,
+    image: '../../images/premium_photo-1675186049366-64a655f8f537.avif',
+    description: 'Elegant silk slip dress.',
+    isDeleted: 'LIVE'
+  },
 
-    {
-      id:1,
-      name: 'Silk Slip Dress',
-      price: 168,
-      category: 'Dresses',
-      color: 'Black',
-      image: '../../images/premium_photo-1675186049366-64a655f8f537.avif',
-      badge: 'BESTSELLER',
-      link: '/prices'
-    },
+  {
+    _id: '2',
+    name: 'Tailored Wool Blazer',
+    price: 245,
+    category: 'Outerwear',
+    quantity: 10,
+    image: '../../images/photo-1610652492500-ded49ceeb378.avif',
+    description: 'Refined tailored wool blazer.',
+    isDeleted: 'LIVE'
+  },
 
-    {
-      id:2,
-      name: 'Tailored Wool Blazer',
-      price: 245,
-      category: 'Outerwear',
-      color: 'Charcoal',
-      image: '../../images/photo-1610652492500-ded49ceeb378.avif',
-      badge: 'NEW IN',
-      link: '/prices'
-    },
+  {
+    _id: '3',
+    name: 'Everyday Knit Set',
+    price: 138,
+    category: 'Knitwear',
+    quantity: 10,
+    image: '../../images/photo-1594938298603-c8148c4dae35.avif',
+    description: 'Comfortable everyday knit set.',
+    isDeleted: 'LIVE'
+  },
 
-    {
-      id:3,
-      name: 'Everyday Knit Set',
-      price: 138,
-      category: 'Knitwear',
-      color: 'Oat',
-      image: '../../images/photo-1594938298603-c8148c4dae35.avif',
-      badge: 'LIMITED',
-      link: '/prices'
-    },
-
-    {
-      id:4,
-      name: 'Studio Leather Tote',
-      price: 189,
-      category: 'Accessories',
-      color: 'Cognac',
-      image: '../../images/photo-1594223274512-ad4803739b7c.avif',
-      badge: 'ESSENTIAL',
-      link: '/prices'
-    }
-
-  ];
+  {
+    _id: '4',
+    name: 'Studio Leather Tote',
+    price: 189,
+    category: 'Accessories',
+    quantity: 10,
+    image: '../../images/photo-1594223274512-ad4803739b7c.avif',
+    description: 'Classic leather tote for everyday use.',
+    isDeleted: 'LIVE'
+  }
+];
 
 }
