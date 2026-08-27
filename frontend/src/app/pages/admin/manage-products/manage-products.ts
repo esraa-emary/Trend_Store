@@ -18,6 +18,7 @@ export class ManageProducts {
   router = inject(Router);
   showAddModal = signal(false);
   editingProduct = signal<IProduct | null>(null);
+  showDeleted = signal(false);
 
   openAddModal() {
     this.showAddModal.set(true);
@@ -27,10 +28,40 @@ export class ManageProducts {
     this.editingProduct.set(product);
   }
 
-  async deleteProduct(id: string) {
-    if (confirm('Are you sure you want to delete this product?')) {
-      this.productsService.deleteProduct(id);
+  toggleDeleted() {
+    this.showDeleted.set(!this.showDeleted());
+    if (this.showDeleted()) {
+      this.productsService.loadDeletedProducts();
     }
+  }
+
+  deleteProduct(id: string) {
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.productsService.deleteProduct(id).subscribe({
+        next: () => {
+          this.productsService.loadProducts();
+          alert('Product deleted successfully!');
+        },
+        error: (err) => {
+          console.error('Error deleting product:', err);
+          alert('Failed to delete product.');
+        }
+      });
+    }
+  }
+
+  restoreProduct(id: string) {
+    this.productsService.restoreProduct(id).subscribe({
+      next: () => {
+        this.productsService.loadProducts();
+        this.productsService.loadDeletedProducts();
+        alert('Product restored successfully!');
+      },
+      error: (err) => {
+        console.error('Error restoring product:', err);
+        alert('Failed to restore product.');
+      }
+    });
   }
 
   closeModals(): void {

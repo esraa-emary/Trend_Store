@@ -4,7 +4,7 @@ const catchAsync = require("../utils/catchAsync.js");
 
 // getall --nagham
 exports.getAllProducts = catchAsync(async (req, res, next) => {
-    const products = await Product.find();
+    const products = await Product.find({ isDeleted: 'LIVE' });
     res.status(200).json({
         status: "success",
         message: "products fetched successfully",
@@ -71,7 +71,7 @@ exports.hideProduct = catchAsync(async (req, res, next) => {
     const product = await Product.findByIdAndUpdate(
         req.params.id,
         {
-            isDeleted: true,
+            isDeleted: 'DRAFT',
             deletedAt: new Date()
         },
         {
@@ -86,11 +86,33 @@ exports.hideProduct = catchAsync(async (req, res, next) => {
         message: "product hidden successfully",
         data: product
     });
-})
+});
+
+// restore --esraa
+exports.restoreProduct = catchAsync(async (req, res, next) => {
+    const product = await Product.findByIdAndUpdate(
+        req.params.id,
+        {
+            isDeleted: 'LIVE',
+            deletedAt: null
+        },
+        {
+            new: true
+        }
+    ).select("+isDeleted +deletedAt");
+
+    if (!product) return next(new AppError(404, `No product found`));
+
+    res.status(200).json({
+        success: true,
+        message: "product restored successfully",
+        data: product
+    });
+});
 
 // gethidden --esraa
 exports.getHiddenProducts = catchAsync(async (req, res, next) => {
-    const products = await Product.find({ isDeleted: true }).select("+isDeleted +deletedAt");
+    const products = await Product.find({ isDeleted: 'DRAFT' }).select("+isDeleted +deletedAt");
 
     if (!products) next(new AppError(404, `No product found`));
 

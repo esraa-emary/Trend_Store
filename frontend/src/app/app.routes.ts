@@ -9,8 +9,23 @@ import { ProductDetails } from './pages/product-detail/product-detail';
 import { CartComponent } from './pages/cart/cart';
 import { CheckoutComponent } from './pages/checkout/checkout';
 import { ProductForm } from './pages/admin/product-form/product-form';
+import { UserLayoutComponent } from './layouts/user-layout/user-layout';
+import { HomeComponent } from './pages/user/user-home/user-home';
+import { ProductsComponent } from './pages/user/products/products';
 
 export const routes: Routes = [
+    {
+        path: '',
+        component: UserLayoutComponent,
+
+        children: [
+            { path: '', redirectTo: "home", pathMatch: "full" },
+            { path: 'home', component: HomeComponent },
+            { path: 'products', component: ProductsComponent }
+
+        ]
+    },
+
     { path: '', component: ProductDetails },
     { path: 'products/:id', component: ProductDetails },
     { path: 'cart', component: CartComponent },

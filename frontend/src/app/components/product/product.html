@@ -1,0 +1,50 @@
+<section class="new-arrivals-section">
+  <div class="container-fluid new-arrivals-container">
+    <div class="section-header">
+      <div class="section-heading">
+        <span class="eyebrow">CURATED FOR NOW</span>
+        <h2 class="section-title">New arrivals</h2>
+      </div>
+      <a routerLink="/products" class="view-all-link" aria-label="View all products">
+        <span>VIEW ALL</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <div class="row products-row">
+      @for (product of products; track product._id) {
+      <div class="col-12 col-sm-6 col-lg-3 product-column">
+        <a [routerLink]="['/products', product._id]" class="product-card" [attr.aria-label]="'View ' + product.name">
+
+          <div class="product-image-wrapper">
+            <img [src]="product.image" [alt]="product.name" class="product-image" />
+
+            @if (product.isDeleted === 'LIVE') {
+            <span class="product-badge">LIVE</span>
+            }
+          </div>
+
+          <div class="product-info">
+            <div class="product-main-info">
+              <h3 class="product-name">{{ product.name }}</h3>
+              <span class="product-price">${{ product.price }}</span>
+            </div>
+
+            <p class="product-meta">
+              {{ product.category }}
+              @if (product.quantity > 0) {
+              · In Stock
+              } @else {
+              · Out of Stock
+              }
+            </p>
+
+            <p class="product-description">{{ product.description }}</p>
+          </div>
+
+        </a>
+      </div>
+      }
+    </div>
+  </div>
+</section>

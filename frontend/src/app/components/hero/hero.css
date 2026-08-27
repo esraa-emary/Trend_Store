@@ -1,0 +1,289 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+
+/* ================================
+   Hero
+================================ */
+
+.hero-section {
+  width: 100%;
+
+  max-width: 1428px;
+
+  margin: 0 auto;
+}
+
+
+.hero-row {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+}
+
+
+/* ================================
+   Left Side
+================================ */
+
+.hero-copy {
+  min-height: 616px;
+
+  display: flex;
+
+  align-items: center;
+
+  background: #e9e6de;
+}
+
+
+.hero-copy-inner {
+  width: 100%;
+
+  padding-left: 78px;
+
+  padding-right: 70px;
+
+  padding-top: 8px;
+
+  padding-bottom: 8px;
+}
+
+
+/* ================================
+   Small Label
+================================ */
+
+.collection-label {
+  margin: 0 0 27px;
+
+  color: #3d5969;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  letter-spacing: 3px;
+
+  line-height: 1.4;
+
+  text-transform: uppercase;
+}
+
+
+/* ================================
+   Heading
+================================ */
+
+.hero-title {
+  max-width: 600px;
+
+  margin: 0;
+
+  color: #171510;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: clamp(58px, 5vw, 86px);
+
+  font-weight: 400;
+
+  letter-spacing: -4px;
+
+  line-height: 0.92;
+}
+
+
+
+.hero-title em {
+  font-style: italic;
+
+  font-weight: 400;
+}
+
+
+/* ================================
+   Description
+================================ */
+
+.hero-description {
+  max-width: 490px;
+
+  margin: 38px 0 0;
+
+  color: #526674;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 15px;
+
+  font-weight: 400;
+
+  line-height: 1.8;
+}
+
+
+/* ================================
+   CTA
+================================ */
+
+.hero-link {
+  width: fit-content;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 39px;
+
+  padding-bottom: 9px;
+
+  color: #171510;
+
+  text-decoration: none;
+
+  border-bottom: 1px solid #171510;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  line-height: 1;
+
+  transition:
+    opacity 0.2s ease,
+    gap 0.2s ease;
+}
+
+
+.hero-link:hover {
+  color: #171510;
+
+  opacity: 0.65;
+
+  gap: 13px;
+}
+
+
+.arrow-icon {
+  width: 15px;
+  height: 15px;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  stroke-width: 1.5;
+
+  stroke-linecap: round;
+
+  stroke-linejoin: round;
+}
+
+
+/* ================================
+   Image
+================================ */
+
+.hero-image-wrapper {
+  min-height: 616px;
+
+  overflow: hidden;
+
+  background: #d9d8d4;
+}
+
+
+.hero-image {
+  display: block;
+
+  width: 100%;
+
+  height: 616px;
+
+  object-fit: cover;
+
+  object-position: center center;
+}
+
+
+/* ================================
+   Tablet
+================================ */
+@media (max-width: 991.98px) {
+
+  .hero-row {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy {
+    min-height: auto;
+  }
+
+  .hero-copy-inner {
+    padding: 58px 35px 54px;
+  }
+
+  .collection-label {
+    margin-bottom: 23px;
+
+    font-size: 10px;
+
+    letter-spacing: 2.5px;
+  }
+
+  .hero-title {
+  max-width: 700px;
+
+  font-size: clamp(54px, 9vw, 72px);
+
+  letter-spacing: -3px;
+
+  line-height: 0.94;
+}
+
+
+  .hero-description {
+    max-width: 540px;
+
+    margin-top: 27px;
+
+    font-size: 14px;
+  }
+
+  .hero-link {
+    margin-top: 30px;
+  }
+
+  .hero-image-wrapper {
+    min-height: 450px;
+  }
+
+  .hero-image {
+    height: 450px;
+  }
+}
